@@ -12,5 +12,5 @@ export const siteConfig = {
       href: "/oj",
     },
   ],
-  benchAPI: "http://lc3xt.skjsjhb.moe:24462/oj",
+  benchAPI: "https://lc3xt.skjsjhb.moe:24462/oj",
 };

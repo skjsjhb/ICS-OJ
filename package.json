@@ -6,7 +6,8 @@
 		"dev": "next dev --turbo",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
+		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
+		"serve": "tsx index.ts"
 	},
 	"dependencies": {
 		"@monaco-editor/react": "^4.6.0",
@@ -56,6 +57,7 @@
 		"postcss": "8.4.38",
 		"tailwind-variants": "0.1.20",
 		"tailwindcss": "3.4.3",
+		"tsx": "^4.19.0",
 		"typescript": "5.0.4"
 	},
 	"packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
