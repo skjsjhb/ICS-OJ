@@ -7,7 +7,7 @@ const languages = [
   ["asm", "LC-3 汇编"],
 ];
 
-export function useCodeEditor(): [string, ReactNode] {
+export function useCodeEditor(): [string, string, ReactNode] {
   const [code, setCode] = useState("");
   const [languageId, setLanguageId] = useState<string>("asm");
 
@@ -28,7 +28,7 @@ export function useCodeEditor(): [string, ReactNode] {
     </div>
   );
 
-  return [code, node];
+  return [code, languageId, node];
 }
 
 function CodeEditor({

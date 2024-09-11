@@ -13,7 +13,7 @@ import BenchStatus from "@/components/bench-status";
 import { sendBenchRequest, BenchResult } from "@/components/bench";
 
 export default function OJPage() {
-  const [code, editor] = useCodeEditor();
+  const [code, lang, editor] = useCodeEditor();
   const [labId, setLabId] = useState("lab1");
   const [env, setEnv] = useState<Record<string, string>>({});
   const [showBenchStatus, setShowBenchStatus] = useState(false);
@@ -32,7 +32,7 @@ export default function OJPage() {
   };
 
   const runBench = async () => {
-    const res = await sendBenchRequest(labId, code, env);
+    const res = await sendBenchRequest(labId, lang, code, env);
 
     setShowBenchStatus(true);
     setBenchStatus(res);

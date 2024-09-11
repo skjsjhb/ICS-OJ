@@ -18,6 +18,7 @@ export type BenchResult =
 
 export async function sendBenchRequest(
   lab: string,
+  lang: string,
   code: string,
   env: Record<string, string>,
 ): Promise<BenchResult[]> {
@@ -26,7 +27,7 @@ export async function sendBenchRequest(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ lab: lab, source: code, properties: env }),
+    body: JSON.stringify({ lab, lang, source: code, properties: env }),
   });
 
   if (ret.status != 200) {
