@@ -4,7 +4,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "LC3XT · LC-3 评测姬",
-  description: "Make beautiful websites regardless of your design experience.",
+  description: "RUN / TEST / PROFILE",
   navItems: [
     {
       icon: BeakerIcon,
@@ -12,5 +12,13 @@ export const siteConfig = {
       href: "/oj",
     },
   ],
-  benchAPI: "https://lc3xt.skjsjhb.moe:24462/oj",
+  benchAPI: getBenchAPI(),
 };
+
+function getBenchAPI() {
+  if (process.env.NODE_ENV === "production") {
+    return "https://lc3xt.skjsjhb.moe:7900/oj";
+  } else {
+    return "http://localhost:7900/oj";
+  }
+}
