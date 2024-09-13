@@ -14,7 +14,7 @@ import { sendBenchRequest } from "@/components/bench";
 
 export default function OJPage() {
   const [code, lang, editor] = useCodeEditor();
-  const [labId, setLabId] = useState("lab1");
+  const [labId, setLabId] = useState("hello");
   const [env, setEnv] = useState<Record<string, string>>({});
 
   const changeLab = (id: string) => {
