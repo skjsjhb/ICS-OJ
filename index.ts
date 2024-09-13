@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 import { createServer } from "https";
 import { parse } from "url";
 import * as fs from "node:fs";
 
 import next from "next";
 
-const port = 3000;
+const port = 443;
 const dev = false;
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -20,7 +21,7 @@ app
       (req, res) => {
         const parsedUrl = parse(req.url!, true);
 
-        handle(req, res, parsedUrl);
+        void handle(req, res, parsedUrl);
       },
     ).listen(port);
 

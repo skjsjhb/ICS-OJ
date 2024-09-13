@@ -1,7 +1,5 @@
 import { BeakerIcon } from "@primer/octicons-react";
 
-export type SiteConfig = typeof siteConfig;
-
 export const siteConfig = {
   name: "LC3XT · LC-3 评测姬",
   description: "RUN / TEST / PROFILE",
@@ -12,13 +10,5 @@ export const siteConfig = {
       href: "/oj",
     },
   ],
-  benchAPI: getBenchAPI(),
+  benchAPI: "http://localhost:7900/oj",
 };
-
-function getBenchAPI() {
-  if (process.env.NODE_ENV === "production") {
-    return "https://lc3xt.skjsjhb.moe:7900/oj";
-  } else {
-    return "http://localhost:7900/oj";
-  }
-}

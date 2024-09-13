@@ -18,6 +18,9 @@ module.exports = {
   safelist: [
     {
       pattern: /bg-.*/
+    },
+    {
+      pattern: /text-.*/
     }
   ],
   darkMode: "class",

@@ -6,18 +6,16 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { Input } from "@nextui-org/input";
 import { Divider } from "@nextui-org/divider";
 import { Button } from "@nextui-org/button";
+import { toast } from "react-toastify";
 
 import { useCodeEditor } from "@/components/code-editor";
 import { labContents } from "@/components/labs";
-import BenchStatus from "@/components/bench-status";
-import { sendBenchRequest, BenchResult } from "@/components/bench";
+import { sendBenchRequest } from "@/components/bench";
 
 export default function OJPage() {
   const [code, lang, editor] = useCodeEditor();
   const [labId, setLabId] = useState("lab1");
   const [env, setEnv] = useState<Record<string, string>>({});
-  const [showBenchStatus, setShowBenchStatus] = useState(false);
-  const [benchStatus, setBenchStatus] = useState<BenchResult[] | null>(null);
 
   const changeLab = (id: string) => {
     setLabId(id);
@@ -32,10 +30,14 @@ export default function OJPage() {
   };
 
   const runBench = async () => {
-    const res = await sendBenchRequest(labId, lang, code, env);
+    try {
+      const res = await sendBenchRequest(labId, lang, code, env);
 
-    setShowBenchStatus(true);
-    setBenchStatus(res);
+      toast.success("提交成功！");
+      location.pathname = "/r/" + res;
+    } catch (e) {
+      toast.error("提交失败，请再试一次。");
+    }
   };
 
   const currentLab = labContents.find((l) => l.id == labId);
@@ -101,12 +103,6 @@ export default function OJPage() {
           </div>
         </Button>
       </div>
-
-      <BenchStatus
-        open={showBenchStatus}
-        stat={benchStatus}
-        onClose={() => setShowBenchStatus(false)}
-      />
     </div>
   );
 }
