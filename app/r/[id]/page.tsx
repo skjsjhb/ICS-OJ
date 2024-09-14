@@ -7,6 +7,7 @@ import CopyCode from "@/components/copy-code";
 import BenchUnits from "@/components/bench-units";
 import CodeBlock from "@/components/code-block";
 import { RefreshButton } from "@/components/refresh-button";
+import { labContents } from "@/components/labs";
 
 export default async function RecordPage({
   params,
@@ -52,6 +53,12 @@ export default async function RecordPage({
       <Divider />
 
       <p className=" text-foreground-500">
+        {
+          labContents.find((it) => it.id == benchResult.request.labId)
+            ?.displayName
+        }
+        <br />
+        <br />
         提交于 {new Date(benchResult.time).toLocaleString()}
         <br />
         {benchedTime > 0 ? (
