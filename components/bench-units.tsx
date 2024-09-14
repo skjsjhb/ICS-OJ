@@ -44,9 +44,6 @@ export default function BenchUnits({ result }: { result: BenchResult }) {
               <p>读取内存：{u.stat.memRead}</p>
               <p>写入内存：{u.stat.memWrite}</p>
             </div>
-
-            <p className="font-bold text-lg">测试环境</p>
-            <CodeBlock code={u.version} />
           </div>
         </AccordionItem>
       ))}

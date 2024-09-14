@@ -26,7 +26,6 @@ export interface BenchUnitResult {
     received: string;
   };
   stat: MachineStat;
-  version: string;
 }
 
 export interface BenchResult {
@@ -37,6 +36,7 @@ export interface BenchResult {
   error: BenchError;
   message: string;
   units: BenchUnitResult[];
+  version: string;
 
   // The original request
   request: BenchRequest;

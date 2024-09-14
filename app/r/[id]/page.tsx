@@ -15,13 +15,6 @@ export default async function RecordPage({
 }) {
   const res = await fetch(`http://localhost:7900/oj/record/${params.id}`);
   const pending = res.status === 204;
-  const benchResult = (await res.json()) as BenchResult;
-  const benchedTime = getBenchCompletedTime(benchResult);
-  const passed =
-    benchResult.units.length > 0 &&
-    benchResult.units.every((u) => u.code === "AC");
-  const totalCount = benchResult.units.length;
-  const passedCount = benchResult.units.filter((u) => u.code === "AC").length;
 
   if (pending) {
     return (
@@ -32,6 +25,14 @@ export default async function RecordPage({
       </div>
     );
   }
+
+  const benchResult = (await res.json()) as BenchResult;
+  const benchedTime = getBenchCompletedTime(benchResult);
+  const passed =
+    benchResult.units.length > 0 &&
+    benchResult.units.every((u) => u.code === "AC");
+  const totalCount = benchResult.units.length;
+  const passedCount = benchResult.units.filter((u) => u.code === "AC").length;
 
   return (
     <div className="px-8 flex flex-col gap-4">
@@ -95,6 +96,11 @@ export default async function RecordPage({
                 .map(([k, v]) => k + "=" + v)
                 .join("\n")}
             />
+          </div>
+
+          <p className="font-bold text-2xl">测试环境</p>
+          <div className="w-10/12">
+            <CodeBlock code={benchResult.version} />
           </div>
         </div>
 

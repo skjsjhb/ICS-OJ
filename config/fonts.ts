@@ -8,4 +8,5 @@ export const fontSans = Noto_Sans_SC({
 export const fontMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  adjustFontFallback: false,
 });
