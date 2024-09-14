@@ -15,11 +15,14 @@ import { sendBenchRequest } from "@/components/bench";
 export default function OJPage() {
   const [code, lang, editor] = useCodeEditor();
   const [labId, setLabId] = useState("hello");
-  const [env, setEnv] = useState<Record<string, string>>(getStoredEnv("hello"));
+  const [env, setEnv] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    localStorage.setItem(`env.${labId}`, JSON.stringify(env));
-  }, [env]);
+    const initLabId = localStorage.getItem("selected-lab") || "hello";
+
+    setLabId(initLabId);
+    setEnv(getStoredEnv(initLabId));
+  }, []);
 
   function getStoredEnv(id: string) {
     const e = localStorage.getItem(`env.${id}`);
@@ -32,13 +35,17 @@ export default function OJPage() {
   const changeLab = (id: string) => {
     setLabId(id);
     setEnv(getStoredEnv(id));
+    localStorage.setItem("selected-lab", id);
   };
 
   const onEnvChange = (id: string, value: string) => {
-    setEnv({
+    const ex = {
       ...env,
       [id]: value,
-    });
+    };
+
+    setEnv(ex);
+    localStorage.setItem(`env.${labId}`, JSON.stringify(ex));
   };
 
   const runBench = async () => {

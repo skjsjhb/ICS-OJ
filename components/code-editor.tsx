@@ -8,18 +8,23 @@ const languages = [
 ];
 
 export function useCodeEditor(): [string, string, ReactNode] {
-  const [code, setCode] = useState(localStorage.getItem("editor.code") || "");
-  const [languageId, setLanguageId] = useState<string>(
-    localStorage.getItem("editor.lang") || "asm",
-  );
+  const [code, setCode] = useState("");
+  const [languageId, setLanguageId] = useState<string>("asm");
 
   useEffect(() => {
-    localStorage.setItem("editor.code", code);
-  }, [code]);
+    setCode(localStorage.getItem("editor.code") || "");
+    setLanguageId(localStorage.getItem("editor.lang") || "asm");
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("editor.lang", languageId);
-  }, [languageId]);
+  const onCodeChange = (c: string) => {
+    setCode(c);
+    localStorage.setItem("editor.code", c);
+  };
+
+  const onLangChange = (c: string) => {
+    setLanguageId(c);
+    localStorage.setItem("editor.lang", c);
+  };
 
   const node = (
     <div className="flex flex-col gap-4 items-center w-full h-full">
@@ -28,13 +33,13 @@ export function useCodeEditor(): [string, string, ReactNode] {
         label="语言"
         selectedKeys={[languageId]}
         size="sm"
-        onChange={(e) => setLanguageId(e.target.value)}
+        onChange={(e) => onLangChange(e.target.value)}
       >
         {languages.map(([id, displayName]) => (
           <SelectItem key={id}>{displayName}</SelectItem>
         ))}
       </Select>
-      <CodeEditor code={code} setCode={setCode} />
+      <CodeEditor code={code} setCode={onCodeChange} />
     </div>
   );
 
