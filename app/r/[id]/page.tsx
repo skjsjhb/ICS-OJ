@@ -134,7 +134,7 @@ function FailedDescription({
 }
 
 function getErrorText(b: BenchResult): string {
-  if (b.error === "CE") return "未完成评测：汇编错误";
+  if (b.error === "CE") return `未完成评测：汇编错误（${b.message}）`;
   else return "未完成评测：评测选项错误或缺失";
 }
 

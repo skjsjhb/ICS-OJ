@@ -1,7 +1,7 @@
 "use client";
 
 import { CodeIcon, ListOrderedIcon, PlayIcon } from "@primer/octicons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 import { Input } from "@nextui-org/input";
 import { Divider } from "@nextui-org/divider";
@@ -15,11 +15,23 @@ import { sendBenchRequest } from "@/components/bench";
 export default function OJPage() {
   const [code, lang, editor] = useCodeEditor();
   const [labId, setLabId] = useState("hello");
-  const [env, setEnv] = useState<Record<string, string>>({});
+  const [env, setEnv] = useState<Record<string, string>>(getStoredEnv("hello"));
+
+  useEffect(() => {
+    localStorage.setItem(`env.${labId}`, JSON.stringify(env));
+  }, [env]);
+
+  function getStoredEnv(id: string) {
+    const e = localStorage.getItem(`env.${id}`);
+
+    if (e) return JSON.parse(e);
+
+    return {};
+  }
 
   const changeLab = (id: string) => {
     setLabId(id);
-    setEnv({});
+    setEnv(getStoredEnv(id));
   };
 
   const onEnvChange = (id: string, value: string) => {
@@ -86,6 +98,7 @@ export default function OJPage() {
             label={qText}
             size="sm"
             type="text"
+            value={env[qid]}
             onChange={(e) => onEnvChange(qid, e.target.value)}
           />
         ))}

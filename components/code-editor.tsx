@@ -1,5 +1,5 @@
 import { Editor } from "@monaco-editor/react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 
 const languages = [
@@ -8,8 +8,18 @@ const languages = [
 ];
 
 export function useCodeEditor(): [string, string, ReactNode] {
-  const [code, setCode] = useState("");
-  const [languageId, setLanguageId] = useState<string>("asm");
+  const [code, setCode] = useState(localStorage.getItem("editor.code") || "");
+  const [languageId, setLanguageId] = useState<string>(
+    localStorage.getItem("editor.lang") || "asm",
+  );
+
+  useEffect(() => {
+    localStorage.setItem("editor.code", code);
+  }, [code]);
+
+  useEffect(() => {
+    localStorage.setItem("editor.lang", languageId);
+  }, [languageId]);
 
   const node = (
     <div className="flex flex-col gap-4 items-center w-full h-full">
