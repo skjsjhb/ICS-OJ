@@ -1,6 +1,7 @@
 import { BenchRequest } from "@/components/bench-types";
 
 export async function sendBenchRequest(
+  session: string,
   lab: string,
   lang: string,
   code: string,
@@ -12,6 +13,7 @@ export async function sendBenchRequest(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      session,
       labId: lab,
       language: lang,
       source: code,

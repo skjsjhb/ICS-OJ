@@ -11,11 +11,13 @@ import { toast } from "react-toastify";
 import { useCodeEditor } from "@/components/code-editor";
 import { labContents } from "@/components/labs";
 import { sendBenchRequest } from "@/components/bench";
+import { useSession } from "@/components/session";
 
 export default function OJPage() {
   const [code, lang, editor] = useCodeEditor();
   const [labId, setLabId] = useState("hello");
   const [env, setEnv] = useState<Record<string, string>>({});
+  const session = useSession();
 
   useEffect(() => {
     const initLabId = localStorage.getItem("selected-lab") || "hello";
@@ -50,7 +52,7 @@ export default function OJPage() {
 
   const runBench = async () => {
     try {
-      const res = await sendBenchRequest(labId, lang, code, env);
+      const res = await sendBenchRequest(session, labId, lang, code, env);
 
       toast.success("提交成功！");
       location.pathname = "/r/" + res;
