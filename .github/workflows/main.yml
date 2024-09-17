@@ -22,9 +22,5 @@ jobs:
       run: |
         pnpm install
         pnpm build
-    - name: Setup Certificates
-      run: |
-        cp ~/private.key ./
-        cp ~/public.pem ./
     - name: Restart Service
       run: pm2 restart ics-oj

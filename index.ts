@@ -10,23 +10,28 @@ const dev = false;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-app
-  .prepare()
-  .then(() => {
-    createServer(
-      {
-        key: fs.readFileSync("private.key"),
-        cert: fs.readFileSync("public.pem"),
-      },
-      (req, res) => {
-        const parsedUrl = parse(req.url!, true);
+const publicKeyPath = process.env.PUBLIC_KEY_PATH || "public.pem";
+const privateKeyPath = process.env.PRIVATE_KEY_PATH || "private.key";
 
-        void handle(req, res, parsedUrl);
-      },
-    ).listen(port);
+async function main() {
+  await app.prepare();
 
-    console.log(`> Server listening at localhost:${port}`);
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+  console.log(`Picked up public key: ${publicKeyPath}`);
+  console.log(`Picked up private key: ${privateKeyPath}`);
+
+  createServer(
+    {
+      key: fs.readFileSync(privateKeyPath),
+      cert: fs.readFileSync(publicKeyPath),
+    },
+    (req, res) => {
+      const parsedUrl = parse(req.url!, true);
+
+      void handle(req, res, parsedUrl);
+    },
+  ).listen(port);
+
+  console.log(`Server listening at localhost:${port}`);
+}
+
+void main();
