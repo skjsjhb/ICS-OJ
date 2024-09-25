@@ -36,7 +36,7 @@ export default function Home() {
             </div>
           </Button>
 
-          <Button fullWidth size="lg">
+          <Button fullWidth as={Link} href="https://lc3.skjsjhb.moe" size="lg">
             <div className="flex items-center gap-2">
               <RepoIcon />
               LC-3 大抄
