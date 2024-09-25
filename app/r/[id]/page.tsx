@@ -4,13 +4,14 @@ import { ClockIcon, LinkIcon } from "@primer/octicons-react";
 import { Progress } from "@nextui-org/progress";
 import Link from "next/link";
 
-import { BenchResult, KACSimilarityRecord } from "@/components/bench-types";
 import CopyCode from "@/components/copy-code";
 import BenchUnits from "@/components/bench-units";
 import CodeBlock from "@/components/code-block";
 import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import OwnerChip from "@/components/owner-chip";
+import { siteConfig } from "@/config/site";
+import { TestResult, SACSimilarityRecord } from "@/types/nya";
 
 export default async function RecordPage({
   params,
@@ -18,11 +19,11 @@ export default async function RecordPage({
   params: { id: string };
 }) {
   const latestVersion = await (
-    await fetch("http://localhost:7900/version")
+    await fetch(siteConfig.benchAPI + "/version")
   ).text();
 
-  const res = await fetch(`http://localhost:7900/oj/record/${params.id}`);
-  const pending = res.status === 204;
+  const res = await fetch(siteConfig.benchAPI + `/record/${params.id}`);
+  const pending = res.status === 202;
 
   if (pending) {
     return (
@@ -34,16 +35,18 @@ export default async function RecordPage({
     );
   }
 
-  const benchResult = (await res.json()) as BenchResult;
-  const benchedTime = getBenchCompletedTime(benchResult);
-  const passed =
-    benchResult.units.length > 0 &&
-    benchResult.units.every((u) => u.code === "AC");
-  const totalCount = benchResult.units.length;
-  const passedCount = benchResult.units.filter((u) => u.code === "AC").length;
-  const isLatest = latestVersion == benchResult.version;
+  const testResult = (await res.json()) as TestResult;
 
-  const sortedKACReport = benchResult.kac.similar.concat();
+  const isLatest = testResult.runnerVersion === latestVersion;
+
+  const benchedTime = getCompletedTime(testResult);
+  const passed =
+    testResult.units.length > 0 &&
+    testResult.units.every((u) => u.status === "AC");
+  const totalCount = testResult.units.length;
+  const passedCount = testResult.units.filter((u) => u.status === "AC").length;
+
+  const sortedKACReport = testResult.sac.concat();
 
   sortedKACReport.sort((a, b) => b.confidence - a.confidence);
 
@@ -56,7 +59,7 @@ export default async function RecordPage({
         <Chip color={passed ? "success" : "warning"} variant="bordered">
           {passed ? "通过 / Accepted" : "未通过 / Not Accepted"}
         </Chip>
-        <OwnerChip session={benchResult.request.session} />
+        <OwnerChip session={testResult.context.session} />
       </div>
 
       {passed ? (
@@ -69,20 +72,20 @@ export default async function RecordPage({
 
       <p className="text-default-500">
         {
-          labContents.find((it) => it.id == benchResult.request.labId)
+          labContents.find((it) => it.id == testResult.context.driver)
             ?.displayName
         }
         <br />
         <br />
-        提交于 {new Date(benchResult.time).toLocaleString()}
+        提交于 {new Date(testResult.time).toLocaleString()}
         <br />
         {benchedTime > 0 ? (
-          <>评测完成于 {new Date(benchResult.time).toLocaleString()}</>
+          <>评测完成于 {new Date(testResult.time).toLocaleString()}</>
         ) : (
           <>评测失败</>
         )}
         <br />
-        特征代码：{benchResult.request.session}
+        指纹：{testResult.context.session}
       </p>
 
       <Divider className="my-2" />
@@ -92,17 +95,17 @@ export default async function RecordPage({
         <div className="flex flex-col basis-2/3 gap-6">
           <p className="text-2xl font-bold">评测总结</p>
 
-          {benchResult.error ? (
-            <p className="text-warning">{getErrorText(benchResult)}</p>
+          {testResult.error ? (
+            <p className="text-warning">{getErrorText(testResult)}</p>
           ) : (
             <div>
               本次评测总计使用了 {totalCount} 个测试点，您的程序通过了&nbsp;
               {passedCount} 个。
               <div className="font-bold gap-4 text-warning pt-4">
-                <FailedDescription benchResult={benchResult} code="WA" />
-                <FailedDescription benchResult={benchResult} code="RE" />
-                <FailedDescription benchResult={benchResult} code="TLE" />
-                <FailedDescription benchResult={benchResult} code="SE" />
+                <FailedDescription benchResult={testResult} code="WA" />
+                <FailedDescription benchResult={testResult} code="RE" />
+                <FailedDescription benchResult={testResult} code="TLE" />
+                <FailedDescription benchResult={testResult} code="SE" />
               </div>
             </div>
           )}
@@ -110,27 +113,27 @@ export default async function RecordPage({
           <p className="text-2xl font-bold">测试点信息</p>
 
           <div className="w-10/12">
-            <BenchUnits result={benchResult} />
+            <BenchUnits result={testResult} />
           </div>
 
           <p className="text-2xl font-bold">评测参数</p>
           <div className="w-10/12">
             <CodeBlock
-              code={Object.entries(benchResult.request.env)
+              code={Object.entries(testResult.context.env)
                 .map(([k, v]) => k + "=" + v)
                 .join("\n")}
             />
           </div>
 
-          <p className="font-bold text-2xl">Koi Anti-Cheat 检测结果</p>
+          <p className="font-bold text-2xl">Sakura Anti-Cheat 检测结果</p>
           <div className="w-10/12 flex flex-col gap-4">
             {possiblePlagiarism && (
               <>
                 <p className="text-warning font-bold">
-                  Koi 找到了部分重复的记录。
+                  SAC 找到了部分重复的记录。
                 </p>
                 <p className="text-sm">
-                  Koi 的检查可能是有些过于严格。谨记：清者自清，浊者自浊。
+                  SAC 的检查有时可能会过于严格。谨记：清者自清，浊者自浊。
                 </p>
                 <Divider className="my-1" />
               </>
@@ -138,18 +141,23 @@ export default async function RecordPage({
 
             {!passed && (
               <p className="text-default-400 font-bold">
-                Koi 只会对通过的评测进行检测 —— 我们鼓励你随意尝试！
+                SAC 只会对通过的评测进行检测 —— 我们鼓励你随意尝试！
               </p>
             )}
 
             {passed && sortedKACReport.length == 0 && (
               <p className="text-default-400 font-bold">
-                Koi 没有检测到重复的代码。
+                SAC 没有检测到重复的代码。
               </p>
             )}
 
             {passed &&
               sortedKACReport.map((r) => <KACEntry key={r.id} record={r} />)}
+          </div>
+
+          <p className="font-bold text-2xl">测试设备</p>
+          <div className="w-10/12 flex flex-col gap-4">
+            <CodeBlock code={testResult.runner} />
           </div>
 
           <p className="font-bold text-2xl">测试环境</p>
@@ -159,7 +167,7 @@ export default async function RecordPage({
                 本评测是在一个更早的版本上运行的。如遇问题，可尝试重新评测。
               </p>
             )}
-            <CodeBlock code={benchResult.version} />
+            <CodeBlock code={testResult.runnerVersion} />
           </div>
         </div>
 
@@ -167,17 +175,17 @@ export default async function RecordPage({
         <div className="flex flex-col basis-1/3 gap-4">
           <p className="text-2xl font-bold">源代码</p>
           <CopyCode
-            data={benchResult.request.source}
-            session={benchResult.request.session}
+            data={testResult.context.source}
+            session={testResult.context.session}
           />
-          <CodeBlock code={benchResult.request.source} />
+          <CodeBlock code={testResult.context.source} />
         </div>
       </div>
     </div>
   );
 }
 
-function KACEntry({ record }: { record: KACSimilarityRecord }) {
+function KACEntry({ record }: { record: SACSimilarityRecord }) {
   const levelColor =
     record.confidence > 0.8
       ? "danger"
@@ -210,9 +218,9 @@ function FailedDescription({
   benchResult,
 }: {
   code: string;
-  benchResult: BenchResult;
+  benchResult: TestResult;
 }) {
-  const count = benchResult.units.filter((u) => u.code === code).length;
+  const count = benchResult.units.filter((u) => u.status === code).length;
 
   if (count === 0) return <></>;
   switch (code) {
@@ -229,12 +237,13 @@ function FailedDescription({
   }
 }
 
-function getErrorText(b: BenchResult): string {
-  if (b.error === "CE") return `未完成评测：汇编错误（${b.message}）`;
+function getErrorText(b: TestResult): string {
+  if (b.error === "CE")
+    return `未完成评测：汇编错误`; // TODO list compile errors
   else return "未完成评测：评测选项错误或缺失";
 }
 
-function getBenchCompletedTime(b: BenchResult) {
+function getCompletedTime(b: TestResult) {
   let t = -1;
 
   for (const { time } of b.units) {

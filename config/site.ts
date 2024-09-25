@@ -10,5 +10,5 @@ export const siteConfig = {
       href: "/oj",
     },
   ],
-  benchAPI: "http://localhost:7900/oj",
+  benchAPI: "http://localhost:7901",
 };

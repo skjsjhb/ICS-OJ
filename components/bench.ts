@@ -1,4 +1,4 @@
-import { BenchRequest } from "@/components/bench-types";
+import { TestContext } from "@/types/nya";
 
 export async function sendBenchRequest(
   session: string,
@@ -14,14 +14,14 @@ export async function sendBenchRequest(
     },
     body: JSON.stringify({
       session,
-      labId: lab,
-      language: lang,
+      driver: lab,
+      lang,
       source: code,
       env,
-    } satisfies BenchRequest),
+    } satisfies TestContext),
   });
 
-  if (ret.status != 201) {
+  if (ret.status != 200) {
     throw `Failed to submit bench request: ${await ret.text()}`;
   }
 
