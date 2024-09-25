@@ -20,7 +20,7 @@ export default async function RecordPage({
   params: { id: string };
 }) {
   const latestVersion = await (
-    await fetch(siteConfig.benchAPI + "/version")
+    await fetch(siteConfig.benchAPI + "/version", { cache: "no-cache" })
   ).text();
 
   const res = await fetch(siteConfig.benchAPI + `/record/${params.id}`);
