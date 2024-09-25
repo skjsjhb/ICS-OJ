@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import CodeBlock from "@/components/code-block";
 import { TestResult, TestUnitStatus } from "@/types/nya";
+import { ExceptionList } from "@/components/exception-list";
 
 export default function BenchUnits({ result }: { result: TestResult }) {
   if (result.units.length === 0)
@@ -34,6 +35,13 @@ export default function BenchUnits({ result }: { result: TestResult }) {
 
             <p className="font-bold text-lg">实际输出</p>
             <CodeBlock code={u.output.received} />
+
+            {u.runtimeExceptions.length > 0 && (
+              <>
+                <p className="text-lg font-bold">运行消息</p>
+                <ExceptionList ex={u.runtimeExceptions} />
+              </>
+            )}
 
             {/*
             <p className="font-bold text-lg">统计信息</p>

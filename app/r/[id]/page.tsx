@@ -12,6 +12,7 @@ import { labContents } from "@/components/labs";
 import OwnerChip from "@/components/owner-chip";
 import { siteConfig } from "@/config/site";
 import { TestResult, SACSimilarityRecord } from "@/types/nya";
+import { ExceptionList } from "@/components/exception-list";
 
 export default async function RecordPage({
   params,
@@ -110,6 +111,13 @@ export default async function RecordPage({
             </div>
           )}
 
+          {testResult.assembleExceptions.length > 0 && (
+            <>
+              <p className="text-2xl font-bold">汇编消息</p>
+              <ExceptionList ex={testResult.assembleExceptions} />
+            </>
+          )}
+
           <p className="text-2xl font-bold">测试点信息</p>
 
           <div className="w-10/12">
@@ -141,7 +149,7 @@ export default async function RecordPage({
 
             {!passed && (
               <p className="text-default-400 font-bold">
-                SAC 只会对通过的评测进行检测 —— 我们鼓励你随意尝试！
+                未通过的评测不在 SAC 的检测范围内。
               </p>
             )}
 
@@ -152,7 +160,7 @@ export default async function RecordPage({
             )}
 
             {passed &&
-              sortedKACReport.map((r) => <KACEntry key={r.id} record={r} />)}
+              sortedKACReport.map((r) => <SACEntry key={r.id} record={r} />)}
           </div>
 
           <p className="font-bold text-2xl">测试设备</p>
@@ -185,7 +193,7 @@ export default async function RecordPage({
   );
 }
 
-function KACEntry({ record }: { record: SACSimilarityRecord }) {
+function SACEntry({ record }: { record: SACSimilarityRecord }) {
   const levelColor =
     record.confidence > 0.8
       ? "danger"
