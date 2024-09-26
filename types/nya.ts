@@ -42,6 +42,12 @@ export type TestUnitResult = {
 
   input: string;
 
+  stats: {
+    instrCount: number;
+    memRead: number;
+    memWrite: number;
+  };
+
   runtimeExceptions: RuntimeExceptionSummary[];
 
   time: number;
