@@ -29,7 +29,15 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const apiVersion = await (
+    await fetch(siteConfig.benchAPI + "/commit")
+  ).text();
+
   return (
     <html suppressHydrationWarning lang="zh-CN">
       <body
@@ -56,10 +64,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <main className="container mx-auto pt-4 px-8 flex-grow">
               {children}
             </main>
-            <footer className="w-full flex items-center justify-center py-3">
-              <b>skjsjhb</b>&nbsp;作品&nbsp;&nbsp;由&nbsp;<b>LC3XT</b>
-              &nbsp;和&nbsp;
-              <b>Next.js</b>&nbsp;强力驱动
+            <footer className="w-full flex flex-col items-center justify-center">
+              <div>
+                <b>skjsjhb</b>&nbsp;作品&nbsp;&nbsp;由&nbsp;<b>LC3XT</b>
+                &nbsp;和&nbsp;
+                <b>Next.js</b>&nbsp;强力驱动
+              </div>
+              <div>
+                LC3XT 服务器版本 <b>{apiVersion}</b>
+              </div>
             </footer>
           </div>
         </Providers>
