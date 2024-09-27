@@ -45,9 +45,9 @@ export default function BenchUnits({ result }: { result: TestResult }) {
 
             <p className="font-bold text-lg">统计信息</p>
             <div className="text-sm flex flex-col gap-1">
-              <p>执行指令数：{u.stats.instrCount}</p>
-              <p>读取内存：{u.stats.memRead}</p>
-              <p>写入内存：{u.stats.memWrite}</p>
+              <p>执行指令数：{u.stats?.instrCount || "未统计"}</p>
+              <p>读取内存：{u.stats?.memRead || "未统计"}</p>
+              <p>写入内存：{u.stats?.memWrite || "未统计"}</p>
             </div>
           </div>
         </AccordionItem>
