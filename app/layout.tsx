@@ -64,7 +64,7 @@ export default async function RootLayout({
             <main className="container mx-auto pt-4 px-8 flex-grow">
               {children}
             </main>
-            <footer className="w-full flex flex-col items-center justify-center">
+            <footer className="mt-8 w-full flex flex-col items-center justify-center">
               <div>
                 <b>skjsjhb</b>&nbsp;作品&nbsp;&nbsp;由&nbsp;<b>LC3XT</b>
                 &nbsp;和&nbsp;

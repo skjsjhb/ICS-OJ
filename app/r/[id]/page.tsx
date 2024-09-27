@@ -1,8 +1,6 @@
 import { Divider } from "@nextui-org/divider";
 import { Chip } from "@nextui-org/chip";
-import { ClockIcon, LinkIcon } from "@primer/octicons-react";
-import { Progress } from "@nextui-org/progress";
-import Link from "next/link";
+import { ClockIcon } from "@primer/octicons-react";
 import { notFound } from "next/navigation";
 
 import CopyCode from "@/components/copy-code";
@@ -12,8 +10,9 @@ import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import OwnerChip from "@/components/owner-chip";
 import { siteConfig } from "@/config/site";
-import { TestResult, SACSimilarityRecord } from "@/types/nya";
+import { TestResult } from "@/types/nya";
 import { ExceptionList } from "@/components/exception-list";
+import SACSummary from "@/app/r/[id]/sac-summary";
 
 export default async function RecordPage({
   params,
@@ -53,11 +52,11 @@ export default async function RecordPage({
   const totalCount = testResult.units.length;
   const passedCount = testResult.units.filter((u) => u.status === "AC").length;
 
-  const sortedKACReport = testResult.sac.concat();
+  const sortedSACReport = testResult.sac.concat();
 
-  sortedKACReport.sort((a, b) => b.confidence - a.confidence);
+  sortedSACReport.sort((a, b) => b.confidence - a.confidence);
 
-  const possiblePlagiarism = (sortedKACReport[0]?.confidence || 0) > 0.8;
+  const possiblePlagiarism = (sortedSACReport[0]?.confidence || 0) > 0.8;
 
   return (
     <div className="px-8 flex flex-col gap-4">
@@ -159,14 +158,13 @@ export default async function RecordPage({
               </p>
             )}
 
-            {passed && sortedKACReport.length == 0 && (
+            {passed && sortedSACReport.length == 0 && (
               <p className="text-default-400 font-bold">
                 SAC 没有检测到重复的代码。
               </p>
             )}
 
-            {passed &&
-              sortedKACReport.map((r) => <SACEntry key={r.id} record={r} />)}
+            {passed && <SACSummary result={sortedSACReport} />}
           </div>
 
           <p className="font-bold text-2xl">测试设备</p>
@@ -196,34 +194,6 @@ export default async function RecordPage({
         </div>
       </div>
     </div>
-  );
-}
-
-function SACEntry({ record }: { record: SACSimilarityRecord }) {
-  const levelColor =
-    record.confidence > 0.8
-      ? "danger"
-      : record.confidence > 0.5
-        ? "warning"
-        : "success";
-
-  const pct = (record.confidence * 100).toFixed(2) + "%";
-
-  return (
-    <Progress
-      color={levelColor}
-      label={
-        <Link className="flex gap-2 items-center" href={`/r/${record.id}`}>
-          {record.id}
-          <LinkIcon />
-        </Link>
-      }
-      maxValue={1}
-      showValueLabel={true}
-      size="sm"
-      value={record.confidence}
-      valueLabel={pct}
-    />
   );
 }
 
