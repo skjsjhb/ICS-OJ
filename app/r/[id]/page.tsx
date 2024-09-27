@@ -3,6 +3,7 @@ import { Chip } from "@nextui-org/chip";
 import { ClockIcon, LinkIcon } from "@primer/octicons-react";
 import { Progress } from "@nextui-org/progress";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import CopyCode from "@/components/copy-code";
 import BenchUnits from "@/components/bench-units";
@@ -24,6 +25,11 @@ export default async function RecordPage({
   ).text();
 
   const res = await fetch(siteConfig.benchAPI + `/record/${params.id}`);
+
+  if (res.status === 404) {
+    return notFound();
+  }
+
   const pending = res.status === 202;
 
   if (pending) {
