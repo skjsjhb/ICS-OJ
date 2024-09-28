@@ -1,4 +1,4 @@
-import { Editor } from "@monaco-editor/react";
+import { Editor, useMonaco } from "@monaco-editor/react";
 import { ReactNode, useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 
@@ -15,6 +15,13 @@ export function useCodeEditor(): [string, string, ReactNode] {
     setCode(localStorage.getItem("editor.code") || "");
     setLanguageId(localStorage.getItem("editor.lang") || "asm");
   }, []);
+
+  const monaco = useMonaco();
+
+  useEffect(() => {
+    monaco?.languages.register({ id: "lc3" });
+    monaco?.languages.setMonarchTokensProvider("lc3", LC3_SYNTAX as any);
+  }, [monaco]);
 
   const onCodeChange = (c: string) => {
     setCode(c);
@@ -57,7 +64,7 @@ function CodeEditor({
     <div className="w-full h-full rounded-lg overflow-hidden">
       <Editor
         height="100%"
-        language="LC3"
+        language="lc3"
         options={{
           fontSize: 16,
           fontFamily:
@@ -70,3 +77,22 @@ function CodeEditor({
     </div>
   );
 }
+
+const LC3_SYNTAX = {
+  ignoreCase: true,
+  tokenizer: {
+    root: [
+      [
+        /\b(?:add|and|br(n?z?p?)?|jmp|jsr|jsrr|ld|ldi|ldr|lea|not|ret|rti|st|sti|str|trap|getc|out|putc|puts|in|putsp|halt)\b/,
+        "keyword",
+      ],
+      [/;(.*)/, "comment"],
+      [/\bR[0-7]\b/, "type.identifier"],
+      [/[ |,]#-?[0-9]+/, "number"],
+      [/\bx-?[A-F0-9]+\b/, "number"],
+      [/'([^\\']|\\.)*'/, "string"],
+      [/"([^\\"]|\\.)*"/, "string"],
+      [/(\.blkw|\.end|\.external|\.fill|\.orig|\.stringz)\b/, "keyword"],
+    ],
+  },
+};
