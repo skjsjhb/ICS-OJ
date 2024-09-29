@@ -1,6 +1,6 @@
 import clsx from "clsx";
-
-import { AssembleExceptionSummary, RuntimeExceptionSummary } from "@/types/nya";
+import { AssembleExceptionSummary } from "lc3xt/src/loli/exceptions";
+import { RuntimeExceptionSummary } from "lc3xt/src/sugar/exceptions";
 
 function toHex(a: number) {
   return "x" + a.toString(16).padStart(4, "0");

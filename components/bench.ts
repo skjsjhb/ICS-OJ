@@ -1,4 +1,4 @@
-import { TestContext } from "@/types/nya";
+import { TestContext } from "lc3xt/src/nya/context";
 
 export async function sendBenchRequest(
   session: string,
@@ -7,6 +7,9 @@ export async function sendBenchRequest(
   code: string,
   env: Record<string, string>,
 ): Promise<string> {
+  // TODO switch to enum check
+  const lng = lang === "bin" ? "bin" : "asm";
+
   const ret = await fetch("/api/oj", {
     method: "POST",
     headers: {
@@ -15,7 +18,7 @@ export async function sendBenchRequest(
     body: JSON.stringify({
       session,
       driver: lab,
-      lang,
+      lang: lng,
       source: code,
       env,
     } satisfies TestContext),

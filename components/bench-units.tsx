@@ -2,9 +2,9 @@
 
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import clsx from "clsx";
+import { TestResult, TestUnitStatus } from "lc3xt/src/nya/context";
 
 import CodeBlock from "@/components/code-block";
-import { TestResult, TestUnitStatus } from "@/types/nya";
 import { ExceptionList } from "@/components/exception-list";
 
 export default function BenchUnits({ result }: { result: TestResult }) {

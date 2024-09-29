@@ -2,6 +2,7 @@ import { Divider } from "@nextui-org/divider";
 import { Chip } from "@nextui-org/chip";
 import { ClockIcon } from "@primer/octicons-react";
 import { notFound } from "next/navigation";
+import { TestResult } from "lc3xt/src/nya/context";
 
 import CopyCode from "@/components/copy-code";
 import BenchUnits from "@/components/bench-units";
@@ -10,7 +11,6 @@ import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import OwnerChip from "@/components/owner-chip";
 import { siteConfig } from "@/config/site";
-import { TestResult } from "@/types/nya";
 import { ExceptionList } from "@/components/exception-list";
 import SACSummary from "@/app/r/[id]/sac-summary";
 

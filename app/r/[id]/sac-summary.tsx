@@ -1,8 +1,7 @@
 import { Progress } from "@nextui-org/progress";
 import Link from "next/link";
 import { LinkIcon } from "@primer/octicons-react";
-
-import { SACSimilarityRecord } from "@/types/nya";
+import { SACSimilarityRecord } from "lc3xt/src/nya/sac";
 
 export default function SACSummary({
   result,
