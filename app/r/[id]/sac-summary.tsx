@@ -9,7 +9,7 @@ export default function SACSummary({
   result: SACSimilarityRecord[];
 }) {
   return (
-    <div className="w-full max-h-48 flex flex-col gap-2 overflow-y-auto">
+    <div className="w-full max-h-48 flex flex-col gap-2 overflow-y-auto pr-2">
       {result.map((r) => (
         <SACEntry key={r.id} record={r} />
       ))}

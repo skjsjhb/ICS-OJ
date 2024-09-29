@@ -148,7 +148,6 @@ export default async function RecordPage({
                 <p className="text-sm">
                   SAC 的检查有时可能会过于严格。谨记：清者自清，浊者自浊。
                 </p>
-                <Divider className="my-1" />
               </>
             )}
 
