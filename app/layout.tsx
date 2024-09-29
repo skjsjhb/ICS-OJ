@@ -35,7 +35,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const apiVersion = await (
-    await fetch(siteConfig.benchAPI + "/commit")
+    await fetch(siteConfig.benchAPI + "/commit", { cache: "no-cache" })
   ).text();
 
   return (
