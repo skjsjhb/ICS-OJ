@@ -1,53 +1,41 @@
-# Next.js & NextUI Template
+# The ICS Online Judging System
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+This repository contains code for the deployed online judging system for the ICS course, built with Next.js (NextUI).
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+Technically this is only a frontend which forwards requests from the user to the judge backend. See [LC3XT](https://github.com/skjsjhb/lc3xt) for details.
 
-## Technologies Used
+## Build
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+You'll need Node.js (probably the latest LTS) with NPM to build. If running under a common architecture, no native toolchain (e.g. MSVC) is required.
 
-## How to Use
+You'll need the backend, LC3XT, to run the frontend. See the build instructions for details.
 
-### Use the template with create-next-app
+1. Clone the project:
+   
+   ```
+   git clone --filter=tree:0 https://github.com/skjsjhb/ics-oj.git
+   ```
 
-To create a new project based on this template using `create-next-app`, run the following command:
+2. Install dependencies:
+   
+   ```
+   npm install
+   ```
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+3. Start the development server:
+   
+   ```
+   npm run dev
+   ```
 
-### Install dependencies
+## Languages
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+The system is provided in **Simplified Chinese** for now. However, more languages are planned.
 
-```bash
-npm install
-```
+## Copying
 
-### Run the development server
+Copyright (C) 2024 Ted "skjsjhb" Gao.
 
-```bash
-npm run dev
-```
+This project is licensed under [GNU Affero General Public License (Version 3)](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
-### Setup pnpm (optional)
-
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
-
-```bash
-public-hoist-pattern[]=*@nextui-org/*
-```
-
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
-
-## License
-
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+There is no warranty for the program, to the extent permitted by applicable law.
