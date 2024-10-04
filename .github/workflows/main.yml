@@ -22,7 +22,7 @@ jobs:
       run: corepack enable
     - name: Build
       run: |
-        npm ci
+        npm install
         npm run build
     - name: Restart Service
       run: pm2 restart ics-oj
