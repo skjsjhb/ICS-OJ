@@ -62,7 +62,7 @@ const localizedCode = {
   TLE: "运行超时 / Time Limit Exceeded",
   RE: "运行错误 / Runtime Error",
   IEE: "输入错误 / Input Error",
-  SE: "系统错误 / System Error",
+  SE: "参数错误 / Spec Error",
 } as const;
 
 const localizedCodeDescription = {
@@ -71,7 +71,7 @@ const localizedCodeDescription = {
   TLE: "本测试点运行超时，请检查程序中是否有死循环，或考虑优化算法。",
   RE: "本测试点检测到运行错误，请参照输出消息修正你的程序。",
   IEE: "本测试点的程序在输入耗尽后仍然尝试读入。",
-  SE: "本测试点在测试过程中发生了故障。",
+  SE: "本测试点无法解析所提供的评测参数。",
 } as const;
 
 function Subtitle({ code }: { code: TestUnitStatus }) {
@@ -82,7 +82,7 @@ function Subtitle({ code }: { code: TestUnitStatus }) {
         "text-red-300": code === "WA",
         "text-yellow-300": code === "RE",
         "text-fuchsia-300": code === "TLE",
-        // "text-gray-300": code === "SE",
+        "text-indigo-300": code === "SE",
       })}
     >
       {localizedCode[code]}

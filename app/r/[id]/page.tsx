@@ -214,7 +214,7 @@ function FailedDescription({
     case "TLE":
       return <>{count} 个测试点运行超时。</>;
     case "SE":
-      return <>{count} 个测试点发生内部错误。</>;
+      return <>{count} 个测试点发生参数错误。</>;
     default:
       return <></>;
   }
