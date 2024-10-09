@@ -1,6 +1,12 @@
-import { Editor, useMonaco } from "@monaco-editor/react";
+import { Editor, useMonaco, loader } from "@monaco-editor/react";
 import { ReactNode, useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
+
+loader.config({
+  paths: {
+    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs",
+  },
+});
 
 const languages = [
   ["bin", "机器代码"],
@@ -16,12 +22,12 @@ export function useCodeEditor(): [string, string, ReactNode] {
     setLanguageId(localStorage.getItem("editor.lang") || "asm");
   }, []);
 
-  const monaco = useMonaco();
+  const editor = useMonaco();
 
   useEffect(() => {
-    monaco?.languages.register({ id: "lc3" });
-    monaco?.languages.setMonarchTokensProvider("lc3", LC3_SYNTAX as any);
-  }, [monaco]);
+    editor?.languages.register({ id: "lc3" });
+    editor?.languages.setMonarchTokensProvider("lc3", LC3_SYNTAX as any);
+  }, [editor]);
 
   const onCodeChange = (c: string) => {
     setCode(c);
