@@ -22,6 +22,7 @@ export default function CopyCode({
   function copyCode() {
     void navigator.clipboard.writeText(data);
     toast.info("代码已复制。");
+    setOpenModal(false);
   }
 
   return (
