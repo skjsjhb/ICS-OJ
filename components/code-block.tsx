@@ -17,7 +17,22 @@ export default function CodeBlock({ code }: { code: string }) {
   }
 
   return (
-    <Code className="p-4 w-full">
+    <Code className="p-4 w-full flex gap-3">
+      <div className="flex flex-col gap-2">
+        {lines.map((line, i) => (
+          <div
+            key={i}
+            className={clsx(
+              "text-wrap text-default-400",
+              fontMono.variable,
+              fontSans.variable,
+            )}
+            style={{ fontFamily: `var(--font-mono), var(--font-sans)` }}
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
       <div className="flex flex-col gap-2">
         {lines.map((line, i) => (
           <div
@@ -25,7 +40,6 @@ export default function CodeBlock({ code }: { code: string }) {
             className={clsx("text-wrap", fontMono.variable, fontSans.variable)}
             style={{ fontFamily: `var(--font-mono), var(--font-sans)` }}
           >
-            <span className="text-default-400">{i}</span>&nbsp;&nbsp;
             {line}
           </div>
         ))}
