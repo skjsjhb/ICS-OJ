@@ -25,6 +25,7 @@ export default function CodeBlock({ code }: { code: string }) {
             className={clsx("text-wrap", fontMono.variable, fontSans.variable)}
             style={{ fontFamily: `var(--font-mono), var(--font-sans)` }}
           >
+            <span className="text-default-400">{i}</span>&nbsp;&nbsp;
             {line}
           </div>
         ))}
