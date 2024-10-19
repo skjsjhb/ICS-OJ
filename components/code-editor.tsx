@@ -2,12 +2,6 @@ import { Editor, useMonaco, loader } from "@monaco-editor/react";
 import { ReactNode, useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 
-loader.config({
-  paths: {
-    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs",
-  },
-});
-
 const languages = [
   ["bin", "机器代码"],
   ["asm", "LC-3 汇编"],
@@ -16,18 +10,21 @@ const languages = [
 export function useCodeEditor(): [string, string, ReactNode] {
   const [code, setCode] = useState("");
   const [languageId, setLanguageId] = useState<string>("asm");
+  const [editorUrlConfigured, setEditorUrlConfigured] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const url = await getPreferredEditorSource();
+
+      loader.config({ paths: { vs: url } });
+      setEditorUrlConfigured(true);
+    })();
+  }, []);
 
   useEffect(() => {
     setCode(localStorage.getItem("editor.code") || "");
     setLanguageId(localStorage.getItem("editor.lang") || "asm");
   }, []);
-
-  const editor = useMonaco();
-
-  useEffect(() => {
-    editor?.languages.register({ id: "lc3" });
-    editor?.languages.setMonarchTokensProvider("lc3", LC3_SYNTAX as any);
-  }, [editor]);
 
   const onCodeChange = (c: string) => {
     setCode(c);
@@ -52,7 +49,7 @@ export function useCodeEditor(): [string, string, ReactNode] {
           <SelectItem key={id}>{displayName}</SelectItem>
         ))}
       </Select>
-      <CodeEditor code={code} setCode={onCodeChange} />
+      {editorUrlConfigured && <CodeEditor code={code} setCode={onCodeChange} />}
     </div>
   );
 
@@ -66,6 +63,13 @@ function CodeEditor({
   code: string;
   setCode: (c: string) => void;
 }) {
+  const editor = useMonaco();
+
+  useEffect(() => {
+    editor?.languages.register({ id: "lc3" });
+    editor?.languages.setMonarchTokensProvider("lc3", LC3_SYNTAX as any);
+  }, [editor]);
+
   return (
     <div className="w-full h-full rounded-lg overflow-hidden">
       <Editor
@@ -135,3 +139,37 @@ const LC3_SYNTAX = {
     ],
   },
 };
+
+const editorSources = [
+  {
+    test: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs/loader.min.js",
+    url: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs",
+  },
+  {
+    test: "https://unpkg.com/browse/monaco-editor@0.46.0/min/vs/loader.js",
+    url: "https://unpkg.com/browse/monaco-editor@0.46.0/min/vs",
+  },
+  {
+    test: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.min.js",
+    url: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs",
+  },
+  {
+    test: "https://cdn.staticfile.net/monaco-editor/0.46.0/min/vs/loader.min.js",
+    url: "https://cdn.staticfile.net/monaco-editor/0.46.0/min/vs",
+  },
+];
+
+export async function getPreferredEditorSource(): Promise<string> {
+  return await Promise.any(
+    editorSources.map(async ({ test, url }) => {
+      const res = await fetch(test);
+
+      if (res.ok) {
+        await res.text();
+
+        return url;
+      }
+      throw `Unable to access ${test}`;
+    }),
+  );
+}
