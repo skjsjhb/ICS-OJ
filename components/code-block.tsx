@@ -16,31 +16,25 @@ export default function CodeBlock({ code }: { code: string }) {
     lines.pop();
   }
 
+  const length = (lines.length + 1).toString().length;
+
   return (
-    <Code className="p-4 w-full flex gap-3">
+    <Code className="p-4 w-full">
       <div className="flex flex-col gap-2">
         {lines.map((line, i) => (
           <div
             key={i}
             className={clsx(
-              "text-wrap text-default-400",
+              "text-wrap flex gap-4",
               fontMono.variable,
               fontSans.variable,
             )}
             style={{ fontFamily: `var(--font-mono), var(--font-sans)` }}
           >
-            {i + 1}
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-col gap-2">
-        {lines.map((line, i) => (
-          <div
-            key={i}
-            className={clsx("text-wrap", fontMono.variable, fontSans.variable)}
-            style={{ fontFamily: `var(--font-mono), var(--font-sans)` }}
-          >
-            {line}
+            <pre className="text-default-400">
+              {(i + 1).toString().padStart(length, " ")}
+            </pre>
+            <pre>{line.trimEnd()}</pre>
           </div>
         ))}
       </div>
