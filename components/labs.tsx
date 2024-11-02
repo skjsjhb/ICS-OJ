@@ -20,4 +20,9 @@ export const labContents: LabMeta[] = [
     displayName: "实验 2：机械化证明",
     env: [],
   },
+  {
+    id: "lab3",
+    displayName: "实验 3：双边检验",
+    env: [],
+  },
 ];
