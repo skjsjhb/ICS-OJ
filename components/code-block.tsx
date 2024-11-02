@@ -34,7 +34,7 @@ export default function CodeBlock({ code }: { code: string }) {
             <pre className="text-default-400">
               {(i + 1).toString().padStart(length, " ")}
             </pre>
-            <pre>{line.trimEnd()}</pre>
+            <pre className="text-wrap break-all">{line.trimEnd()}</pre>
           </div>
         ))}
       </div>
