@@ -23,6 +23,6 @@ export const labContents: LabMeta[] = [
   {
     id: "lab3",
     displayName: "实验 3：双边检验",
-    env: [],
+    env: [["stuId", "学号"]],
   },
 ];
