@@ -1,6 +1,8 @@
 import { Editor, useMonaco, loader } from "@monaco-editor/react";
 import { ReactNode, useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
+import { Textarea } from "@nextui-org/input";
+import { Switch } from "@nextui-org/switch";
 
 const languages = [
   ["bin", "机器代码"],
@@ -10,6 +12,7 @@ const languages = [
 export function useCodeEditor(): [string, string, ReactNode] {
   const [code, setCode] = useState("");
   const [languageId, setLanguageId] = useState<string>("asm");
+  const [useAltEditor, setUseAltEditor] = useState<boolean>(false);
   const [editorUrlConfigured, setEditorUrlConfigured] = useState(false);
 
   useEffect(() => {
@@ -49,11 +52,38 @@ export function useCodeEditor(): [string, string, ReactNode] {
           <SelectItem key={id}>{displayName}</SelectItem>
         ))}
       </Select>
-      {editorUrlConfigured && <CodeEditor code={code} setCode={onCodeChange} />}
+      {useAltEditor && <AltCodeEditor code={code} setCode={onCodeChange} />}
+      {!useAltEditor && editorUrlConfigured && (
+        <CodeEditor code={code} setCode={onCodeChange} />
+      )}
+      <div>
+        <Switch onChange={(e) => setUseAltEditor(e.target.checked)}>
+          使用纯文本编辑器
+        </Switch>
+      </div>
     </div>
   );
 
   return [code, languageId, node];
+}
+
+function AltCodeEditor({
+  code,
+  setCode,
+}: {
+  code: string;
+  setCode: (c: string) => void;
+}) {
+  return (
+    <div className="w-full h-full rounded-lg overflow-hidden">
+      <Textarea
+        className="font-mono"
+        size="lg"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+      />
+    </div>
+  );
 }
 
 function CodeEditor({

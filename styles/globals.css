@@ -21,3 +21,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #666;
 }
+
+* {
+    --font-mono: "JetBrains Mono", Consolas, Monaco, "Fira Code", "Courier New", monospace;
+}
