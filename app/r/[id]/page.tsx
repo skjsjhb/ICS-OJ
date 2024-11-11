@@ -3,6 +3,7 @@ import { Chip } from "@nextui-org/chip";
 import { ClockIcon } from "@primer/octicons-react";
 import { notFound } from "next/navigation";
 import { TestResult } from "lc3xt/src/nya/context";
+import { Link } from "@nextui-org/link";
 
 import CopyCode from "@/components/copy-code";
 import BenchUnits from "@/components/bench-units";
@@ -57,6 +58,9 @@ export default async function RecordPage({
   sortedSACReport.sort((a, b) => b.confidence - a.confidence);
 
   const possiblePlagiarism = (sortedSACReport[0]?.confidence || 0) > 0.8;
+  const commits = await (
+    await fetch(siteConfig.benchAPI + `/whose/${testResult.context.session}`)
+  ).json();
 
   return (
     <div className="px-8 flex flex-col gap-4">
@@ -164,6 +168,17 @@ export default async function RecordPage({
             )}
 
             {passed && <SACSummary result={sortedSACReport} />}
+          </div>
+
+          <p className="font-bold text-2xl">
+            {testResult.context.session} 的其它提交
+          </p>
+          <div className="w-10/12 flex flex-col gap-2">
+            {commits.map((it: string) => (
+              <Link key={it} color="primary" href={"/r/" + it}>
+                {it}
+              </Link>
+            ))}
           </div>
 
           <p className="font-bold text-2xl">测试设备</p>
