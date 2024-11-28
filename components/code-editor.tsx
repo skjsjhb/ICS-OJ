@@ -129,6 +129,7 @@ const LC3_SYNTAX = {
     "brp",
     "brnz",
     "brnp",
+    "brzp",
     "brnzp",
     "jmp",
     "jsr",
