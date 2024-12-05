@@ -30,4 +30,9 @@ export const labContents: LabMeta[] = [
     displayName: "实验 4：未雨绸缪",
     env: [["stuId", "学号"]],
   },
+  {
+    id: "lab5",
+    displayName: "实验 5：探秘之光",
+    env: [["stuId", "学号"]],
+  },
 ];
