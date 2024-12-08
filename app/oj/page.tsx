@@ -101,7 +101,7 @@ export default function OJPage() {
 
         {envItems.map(([qid, qText]) => (
           <Input
-            key={qid}
+            key={labId + "-" + qid}
             errorMessage="此项是必填项"
             isInvalid={!env[qid]}
             label={qText}
