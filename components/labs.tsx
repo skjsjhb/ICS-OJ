@@ -35,4 +35,9 @@ export const labContents: LabMeta[] = [
     displayName: "实验 5：探秘之光",
     env: [["stuId", "学号"]],
   },
+  {
+    id: "lab6",
+    displayName: "实验 6：分离与统一",
+    env: [["stuId", "学号"]],
+  },
 ];
