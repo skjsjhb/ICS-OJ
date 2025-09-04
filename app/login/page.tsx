@@ -23,7 +23,6 @@ export default function LoginPage() {
 
         toast.success("登录成功！");
 
-        console.log("Setting UID: " + formUid);
         setUid(formUid);
         setToken(token);
     }
