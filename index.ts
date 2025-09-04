@@ -14,24 +14,24 @@ const publicKeyPath = process.env.PUBLIC_KEY_PATH || "public.pem";
 const privateKeyPath = process.env.PRIVATE_KEY_PATH || "private.key";
 
 async function main() {
-  await app.prepare();
+    await app.prepare();
 
-  console.log(`Picked up public key: ${publicKeyPath}`);
-  console.log(`Picked up private key: ${privateKeyPath}`);
+    console.log(`Picked up public key: ${publicKeyPath}`);
+    console.log(`Picked up private key: ${privateKeyPath}`);
 
-  createServer(
-    {
-      key: fs.readFileSync(privateKeyPath),
-      cert: fs.readFileSync(publicKeyPath),
-    },
-    (req, res) => {
-      const parsedUrl = parse(req.url!, true);
+    createServer(
+        {
+            key: fs.readFileSync(privateKeyPath),
+            cert: fs.readFileSync(publicKeyPath)
+        },
+        (req, res) => {
+            const parsedUrl = parse(req.url!, true);
 
-      void handle(req, res, parsedUrl);
-    },
-  ).listen(port);
+            void handle(req, res, parsedUrl);
+        }
+    ).listen(port);
 
-  console.log(`Server listening at localhost:${port}`);
+    console.log(`Server listening at localhost:${port}`);
 }
 
 void main();
