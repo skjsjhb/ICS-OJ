@@ -51,8 +51,6 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
 
     const testResult = JSON.parse(res) as TestResult;
 
-    const isLatest = true; // testResult.runnerVersion === latestVersion;
-
     const benchedTime = getCompletedTime(testResult);
     const passed =
         testResult.units.length > 0 &&
@@ -137,21 +135,6 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
                                 .map(([k, v]) => k + "=" + v)
                                 .join("\n")}
                         />
-                    </div>
-
-                    <p className="font-bold text-2xl">测试设备</p>
-                    <div className="w-10/12 flex flex-col gap-4">
-                        <CodeBlock code={testResult.runner}/>
-                    </div>
-
-                    <p className="font-bold text-2xl">测试环境</p>
-                    <div className="w-10/12 flex flex-col gap-4">
-                        {!isLatest && (
-                            <p className="text-warning font-bold">
-                                本评测是在一个更早的版本上运行的。如遇问题，可尝试重新评测。
-                            </p>
-                        )}
-                        <CodeBlock code={testResult.runnerVersion}/>
                     </div>
                 </div>
 

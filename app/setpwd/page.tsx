@@ -16,8 +16,8 @@ export default function SetPwdPage() {
     if (!uid) return "";
 
     async function setPwd() {
-        const token = await updatePwd(uid, formPwd, getToken());
-        if (!token) {
+        const ok = await updatePwd(uid, formPwd, getToken());
+        if (!ok) {
             toast.error("无法修改密码，请检查凭据。");
             return;
         }
@@ -28,6 +28,7 @@ export default function SetPwdPage() {
     return <Card className="w-1/3">
         <CardBody className="flex flex-col gap-4 p-8 items-center">
             <h1 className="font-bold text-2xl mb-4">更新密码</h1>
+            <Input value={uid} isDisabled/>
             <Input type="password" placeholder="新密码" value={formPwd} onValueChange={setFormPwd}/>
             <Button color="primary" onPress={setPwd} fullWidth>修改密码</Button>
         </CardBody>

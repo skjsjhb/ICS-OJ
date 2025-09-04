@@ -1,3 +1,5 @@
+"use client";
+
 import { Editor, loader, useMonaco } from "@monaco-editor/react";
 import { ReactNode, useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -67,10 +69,7 @@ export function useCodeEditor(): [string, string, ReactNode] {
     return [code, languageId, node];
 }
 
-function AltCodeEditor({
-                           code,
-                           setCode
-                       }: {
+function AltCodeEditor({ code, setCode }: {
     code: string;
     setCode: (c: string) => void;
 }) {
@@ -86,13 +85,7 @@ function AltCodeEditor({
     );
 }
 
-function CodeEditor({
-                        code,
-                        setCode
-                    }: {
-    code: string;
-    setCode: (c: string) => void;
-}) {
+function CodeEditor({ code, setCode }: { code: string; setCode: (c: string) => void; }) {
     const editor = useMonaco();
 
     useEffect(() => {
@@ -177,10 +170,6 @@ const editorSources = [
         url: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs"
     },
     {
-        test: "https://unpkg.com/browse/monaco-editor@0.46.0/min/vs/loader.js",
-        url: "https://unpkg.com/browse/monaco-editor@0.46.0/min/vs"
-    },
-    {
         test: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.min.js",
         url: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs"
     },
@@ -191,16 +180,18 @@ const editorSources = [
 ];
 
 export async function getPreferredEditorSource(): Promise<string> {
-    return await Promise.any(
-        editorSources.map(async ({ test, url }) => {
-            const res = await fetch(test);
+    const ac = new AbortController();
 
-            if (res.ok) {
-                await res.text();
-
-                return url;
-            }
-            throw `Unable to access ${test}`;
+    return await Promise.race(
+        editorSources.map(({ test, url }) => {
+            return new Promise<string>((res) => {
+                fetch(test, { signal: ac.signal }).then((r) => {
+                    if (r.ok) {
+                        ac.abort("Cancelled");
+                        res(url);
+                    }
+                }).catch(() => {});
+            });
         })
     );
 }
