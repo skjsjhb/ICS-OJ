@@ -1,4 +1,4 @@
-import { BeakerIcon } from "@primer/octicons-react";
+import { BeakerIcon, PersonIcon } from "@primer/octicons-react";
 
 export const siteConfig = {
     name: "LC3XT · LC-3 评测姬",
@@ -8,6 +8,11 @@ export const siteConfig = {
             icon: BeakerIcon,
             label: "评测",
             href: "/oj"
+        },
+        {
+            icon: PersonIcon,
+            label: "用户登录",
+            href: "/login"
         }
     ],
     benchAPI: "http://localhost:7901"

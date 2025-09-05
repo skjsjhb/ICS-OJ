@@ -7,9 +7,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { getToken, useUid } from "@/components/user";
 import { updatePwd } from "@/app/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function SetPwdPage() {
     const [formPwd, setFormPwd] = useState("");
+    const router = useRouter();
 
     const [uid] = useUid();
 
@@ -23,6 +25,7 @@ export default function SetPwdPage() {
         }
 
         toast.success("已更新密码。");
+        router.push("/login");
     }
 
     return <Card className="w-1/3">

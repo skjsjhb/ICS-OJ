@@ -4,35 +4,41 @@ import { Divider } from "@nextui-org/divider";
 import Link from "next/link";
 
 import { title } from "@/components/primitives";
+import { siteConfig } from "@/config/site";
 
-export default function Home() {
+export default async function Home() {
+    const apiVersion = await (
+        await fetch(siteConfig.benchAPI + "/commit", { cache: "no-cache" })
+    ).text();
+
     return (
-        <section className="flex flex-col items-center justify-center gap-4 py-8 w-full">
-            <div className="flex flex-col justify-center items-center w-6/12">
-                <div className="flex items-center justify-center gap-4">
-                    <div className="flex flex-col justify-center items-center gap-4">
-                        <h1 className={title({ color: "cyan" })}>RUN</h1>
-                        <h1 className={title({ color: "green" })}>TEST</h1>
-                        <h1 className={title({ color: "pink" })}>PROFILE</h1>
+        <div className="w-full h-full grid">
+            <div className="flex flex-col items-center justify-center gap-4 w-5/6 mx-auto my-auto">
+                <div className="flex w-1/2 justify-between gap-2">
+                    <div className="flex items-center justify-center gap-4">
+                        <div className="flex flex-col justify-center items-center gap-4">
+                            <h1 className={title({ color: "cyan" })}>RUN</h1>
+                            <h1 className={title({ color: "green" })}>TEST</h1>
+                            <h1 className={title({ color: "pink" })}>PROFILE</h1>
+                        </div>
+                    </div>
+
+                    <div className="flex">
+                        <Divider orientation="vertical" className="h-2/3 my-auto"/>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1 justify-center min-w-fit">
+                        <p className="text-3xl font-bold mb-4">LC-3 评测姬</p>
+                        <p className="text-foreground-400">LC3XT / NYA</p>
+                        <p className="text-foreground-400">Build {apiVersion}</p>
                     </div>
                 </div>
 
-                <Divider className="my-8"/>
-
-                <p className="text-3xl font-bold">LC-3 评测姬</p>
-                <p className="mt-2 text-foreground-400">LC3XT / SUGAR</p>
-
-                <div className="mt-8 py-2 px-4 border-2 border-foreground-400 rounded-lg">
-                    <p className="text-foreground-500">
-                        多评一遍&nbsp;&nbsp;安全保险&nbsp;&nbsp;多测一步&nbsp;&nbsp;少出错误
-                    </p>
-                </div>
-
-                <div className="mt-8 w-9/12 flex flex-col gap-4 items-center">
+                <div className="mt-12 w-2/3 flex gap-4">
                     <Button fullWidth as={Link} color="primary" href="/oj" size="lg">
                         <div className="flex items-center gap-2">
                             <BeakerIcon/>
-                            评测实验
+                            代码评测
                         </div>
                     </Button>
 
@@ -44,6 +50,6 @@ export default function Home() {
                     </Button>
                 </div>
             </div>
-        </section>
+        </div>
     );
 }

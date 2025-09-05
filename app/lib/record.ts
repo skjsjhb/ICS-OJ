@@ -10,8 +10,6 @@ export async function getRecord(id: string, token: string): Promise<string | nul
         }
     });
 
-    console.log("LC3XT response: " + res.status);
-
     if (!res.ok) return null;
 
     if (res.status === 202) return "PENDING";

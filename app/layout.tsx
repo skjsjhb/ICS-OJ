@@ -32,12 +32,11 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: {
     children: ReactNode;
 }) {
-    const apiVersion = await (
-        await fetch(siteConfig.benchAPI + "/commit", { cache: "no-cache" })
-    ).text();
-
     return (
         <html suppressHydrationWarning lang="zh-CN">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        </head>
         <body
             className={clsx(
                 "min-h-screen bg-background font-sans antialiased",
@@ -57,21 +56,11 @@ export default async function RootLayout({ children }: {
             theme="dark"
         />
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <div className="relative flex flex-col h-screen">
+            <div className="w-full h-screen flex flex-col">
                 <Navbar/>
-                <main className="container mx-auto pt-4 px-8 flex-grow">
+                <div className="my-auto grow min-h-0">
                     {children}
-                </main>
-                <footer className="mt-8 w-full flex flex-col items-center justify-center">
-                    <div>
-                        <b>skjsjhb</b>&nbsp;作品&nbsp;&nbsp;由&nbsp;<b>LC3XT</b>
-                        &nbsp;和&nbsp;
-                        <b>Next.js</b>&nbsp;强力驱动
-                    </div>
-                    <div>
-                        LC3XT 服务器版本 <b>{apiVersion}</b>
-                    </div>
-                </footer>
+                </div>
             </div>
         </Providers>
         </body>

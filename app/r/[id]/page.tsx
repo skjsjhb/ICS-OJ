@@ -59,7 +59,7 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
     const passedCount = testResult.units.filter((u) => u.status === "AC").length;
 
     return (
-        <div className="px-8 flex flex-col gap-4">
+        <div className="mx-auto w-5/6 py-8 px-8 flex flex-col gap-4">
             <div className="flex gap-4 items-center">
                 <p className="text-3xl font-bold">提交记录 / {params.id}</p>
                 <Chip color={passed ? "success" : "warning"} variant="bordered">

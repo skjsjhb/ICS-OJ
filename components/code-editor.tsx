@@ -76,8 +76,9 @@ function AltCodeEditor({ code, setCode }: {
     return (
         <div className="w-full h-full rounded-lg overflow-hidden">
             <Textarea
-                className="font-mono"
+                className="font-mono w-full h-full"
                 size="lg"
+                classNames={{ input: "p-2" }}
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
             />
@@ -101,7 +102,8 @@ function CodeEditor({ code, setCode }: { code: string; setCode: (c: string) => v
                 options={{
                     fontSize: 16,
                     fontFamily:
-                        "'JetBrains Mono', Consolas, Monaco, 'Fira Code', 'Courier New', monospace"
+                        "'JetBrains Mono', Consolas, Monaco, 'Fira Code', 'Courier New', monospace",
+                    automaticLayout: true
                 }}
                 theme="vs-dark"
                 value={code}
