@@ -6,7 +6,7 @@ import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { runLogin } from "@/app/lib/auth";
 import { toast } from "react-toastify";
-import { setToken, useUid } from "@/components/user";
+import { clearUid, setToken, useUid } from "@/components/user";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -30,6 +30,7 @@ export default function LoginPage() {
 
     function logout() {
         setUid("");
+        clearUid();
         setToken("");
     }
 

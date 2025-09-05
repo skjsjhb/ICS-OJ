@@ -17,6 +17,12 @@ export function useUid() {
     return pair;
 }
 
+export function clearUid() {
+    console.log("Clearing UID");
+    localStorage.removeItem("uid");
+
+}
+
 export function getToken(): string {
     return localStorage.getItem("token") || "";
 }

@@ -19,14 +19,11 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
     // const latestVersion = await (
     //     await fetch(siteConfig.benchAPI + "/version", { cache: "no-cache" })
     // ).text();
-    console.log("Begin render");
     const params = React.use(params0);
 
     const [record, setRecord] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log("Running in effect");
-        console.log("Page ID: " + params.id);
         getRecord(params.id, getToken()).then(setRecord);
     }, [params.id]);
 
