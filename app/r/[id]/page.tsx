@@ -49,9 +49,7 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
     const testResult = JSON.parse(res) as TestResult;
 
     const benchedTime = getCompletedTime(testResult);
-    const passed =
-        testResult.units.length > 0 &&
-        testResult.units.every((u) => u.status === "AC");
+    const passed = testResult.accepted;
     const totalCount = testResult.units.length;
     const passedCount = testResult.units.filter((u) => u.status === "AC").length;
 
