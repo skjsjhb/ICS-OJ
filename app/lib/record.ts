@@ -3,7 +3,6 @@
 import { siteConfig } from "@/config/site";
 
 export async function getRecord(id: string, token: string): Promise<string | null> {
-    console.log("id: " + id);
     const res = await fetch(siteConfig.benchAPI + `/record/${id}`, {
         headers: {
             "Authorization": token

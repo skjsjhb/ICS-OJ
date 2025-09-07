@@ -18,7 +18,6 @@ export function useUid() {
 }
 
 export function clearUid() {
-    console.log("Clearing UID");
     localStorage.removeItem("uid");
 
 }

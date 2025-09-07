@@ -17,7 +17,6 @@ export async function runLogin(uid: string, pwd: string): Promise<string> {
 }
 
 export async function updatePwd(uid: string, pwd: string, token: string): Promise<boolean> {
-    console.log(`Next update PWD, token=${token}`);
     const rp = await fetch(siteConfig.benchAPI + "/auth/setpwd", {
         method: "POST",
         headers: {
@@ -26,8 +25,6 @@ export async function updatePwd(uid: string, pwd: string, token: string): Promis
         },
         body: JSON.stringify({ uid, pwd })
     });
-
-    console.log(rp.status);
 
     return rp.ok;
 }
