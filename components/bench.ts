@@ -1,4 +1,4 @@
-import { TestInput } from "lc3xt/src/nya/context";
+import { submitCode } from "@/app/lib/oj";
 
 export async function sendBenchRequest(
     uid: string,
@@ -11,24 +11,17 @@ export async function sendBenchRequest(
     // TODO switch to enum check
     const lng = lang === "bin" ? "bin" : "asm";
 
-    const ret = await fetch("/api/oj", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": token
-        },
-        body: JSON.stringify({
-            uid,
-            driver: lab,
-            lang: lng,
-            source: code,
-            env
-        } satisfies TestInput)
-    });
+    const rid = await submitCode({
+        uid,
+        driver: lab,
+        lang: lng,
+        source: code,
+        env
+    }, token);
 
-    if (ret.status != 200) {
-        throw `Failed to submit bench request: ${await ret.text()}`;
+    if (!rid) {
+        throw `Failed to submit bench request`;
     }
 
-    return await ret.text();
+    return rid;
 }
