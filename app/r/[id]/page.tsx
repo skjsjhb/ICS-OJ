@@ -146,13 +146,7 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
     );
 }
 
-function FailedDescription({
-                               code,
-                               benchResult
-                           }: {
-    code: string;
-    benchResult: TestResult;
-}) {
+function FailedDescription({ code, benchResult }: { code: string; benchResult: TestResult; }) {
     const count = benchResult.units.filter((u) => u.status === code).length;
 
     if (count === 0) return <></>;

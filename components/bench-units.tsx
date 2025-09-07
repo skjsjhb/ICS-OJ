@@ -6,6 +6,7 @@ import { TestResult, TestUnitStatus } from "lc3xt/src/nya/context";
 
 import CodeBlock from "@/components/code-block";
 import { ExceptionList } from "@/components/exception-list";
+import React from "react";
 
 export default function BenchUnits({ result }: { result: TestResult }) {
     if (result.units.length === 0)
@@ -49,6 +50,13 @@ export default function BenchUnits({ result }: { result: TestResult }) {
                             <p>读取内存：{u.stats?.memRead ?? "未统计"}</p>
                             <p>写入内存：{u.stats?.memWrite ?? "未统计"}</p>
                         </div>
+
+                        {u.stats.instrFrequency && Object.keys(u.stats.instrFrequency).length > 0 &&
+                            <>
+                                <p className="font-bold text-lg">指令执行频率</p>
+                                <CodeBlock code={result.context.source} frequency={u.stats.instrFrequency}/>
+                            </>
+                        }
                     </div>
                 </AccordionItem>
             ))}
