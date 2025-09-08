@@ -5,8 +5,7 @@
     "scripts": {
         "dev": "next dev --turbo",
         "build": "next build",
-        "start": "next start",
-        "serve": "tsx index.ts"
+        "start": "next start"
     },
     "dependencies": {
         "@monaco-editor/react": "^4.7.0",

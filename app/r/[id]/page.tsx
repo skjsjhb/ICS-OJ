@@ -11,7 +11,7 @@ import CodeBlock from "@/components/code-block";
 import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import { ExceptionList } from "@/components/exception-list";
-import { getRecord } from "@/app/lib/record";
+import { getRecord } from "@/app/actions/record";
 import { getToken } from "@/components/user";
 import React, { useEffect, useState } from "react";
 

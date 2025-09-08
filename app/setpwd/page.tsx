@@ -6,7 +6,7 @@ import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { getToken, useUid } from "@/components/user";
-import { updatePwd } from "@/app/lib/auth";
+import { updatePwd } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
 
 export default function SetPwdPage() {

@@ -1,4 +1,4 @@
-import { submitCode } from "@/app/lib/oj";
+import { submitCode } from "@/app/actions/oj";
 
 export async function sendBenchRequest(
     uid: string,

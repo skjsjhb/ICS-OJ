@@ -4,7 +4,7 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
-import { runLogin } from "@/app/lib/auth";
+import { runLogin } from "@/app/actions/auth";
 import { toast } from "react-toastify";
 import { clearUid, setToken, useUid } from "@/components/user";
 import Link from "next/link";
