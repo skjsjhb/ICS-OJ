@@ -14,8 +14,15 @@ import { Divider } from "@heroui/divider";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Alert } from "@heroui/alert";
+import dynamic from "next/dynamic";
 
-export default function OJPage() {
+// TODO Code cleanup, clear client components
+
+const NoSSROJPage = dynamic(() => Promise.resolve(OJPage), { ssr: false });
+
+export default NoSSROJPage;
+
+function OJPage() {
     const [code, lang, editor] = useCodeEditor();
     const [labId, setLabId] = useState("hello");
     const [env, setEnv] = useState<Record<string, string>>({});
