@@ -1,10 +1,8 @@
-import { Divider } from "@nextui-org/divider";
-import { Chip } from "@nextui-org/chip";
 import { ClockIcon } from "@primer/octicons-react";
 import { TestResult } from "lc3xt/src/nya/context";
 
 import CopyCode from "@/components/copy-code";
-import BenchUnits from "@/components/bench-units";
+import { BenchUnits } from "@/components/bench-units";
 import CodeBlock from "@/components/code-block";
 import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
@@ -12,6 +10,8 @@ import { ExceptionList } from "@/components/exception-list";
 import { getRecord } from "@/app/actions/record";
 import React from "react";
 import { cookies } from "next/headers";
+import { Chip } from "@heroui/chip";
+import { Divider } from "@heroui/divider";
 
 export default async function RecordPage({ params: params0 }: { params: Promise<{ id: string }> }) {
     const params = await params0;

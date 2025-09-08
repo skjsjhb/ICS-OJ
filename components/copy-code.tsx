@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { CopyIcon } from "@primer/octicons-react";
 import { toast } from "react-toastify";
 

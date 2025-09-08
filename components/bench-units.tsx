@@ -1,14 +1,14 @@
 "use client";
 
-import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import clsx from "clsx";
 import { TestResult, TestUnitStatus } from "lc3xt/src/nya/context";
 
 import CodeBlock from "@/components/code-block";
 import { ExceptionList } from "@/components/exception-list";
 import React from "react";
+import { Accordion, AccordionItem } from "@heroui/accordion";
 
-export default function BenchUnits({ result }: { result: TestResult }) {
+export function BenchUnits({ result }: { result: TestResult }) {
     if (result.units.length === 0)
         return <p className="font-bold text-default-400">（无内容）</p>;
 

@@ -1,13 +1,13 @@
 "use client";
 
-import { Card, CardBody } from "@nextui-org/card";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { updatePwd } from "@/app/actions/auth";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
+import { Card, CardBody } from "@heroui/card";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
 
 export default function SetPwdPage() {
     const [formPwd, setFormPwd] = useState("");

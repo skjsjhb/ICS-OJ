@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@nextui-org/button";
 import { useEffect } from "react";
+import { Button } from "@heroui/button";
 
 export function RefreshButton() {
     useEffect(() => {

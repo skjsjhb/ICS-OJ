@@ -1,5 +1,4 @@
-import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
+import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
 import NextLink from "next/link";
 import clsx from "clsx";
 import React from "react";
@@ -20,8 +19,7 @@ export const Navbar = () => {
                         <NavbarItem key={item.href}>
                             <NextLink
                                 className={clsx(
-                                    linkStyles({ color: "foreground" }),
-                                    "data-[active=true]:text-primary data-[active=true]:font-medium"
+                                    "data-[active=true]:text-primary data-[active=true]:font-medium text-foreground"
                                 )}
                                 color="foreground"
                                 href={item.href}

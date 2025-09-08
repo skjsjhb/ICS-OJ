@@ -2,18 +2,18 @@
 
 import { CodeIcon, ListOrderedIcon, PlayIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import { Select, SelectItem } from "@nextui-org/select";
-import { Input } from "@nextui-org/input";
-import { Divider } from "@nextui-org/divider";
-import { Button } from "@nextui-org/button";
 import { toast } from "react-toastify";
 
 import { useCodeEditor } from "@/components/code-editor";
 import { labContents } from "@/components/labs";
 import { sendBenchRequest } from "@/components/bench";
-import { Alert } from "@nextui-org/alert";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
+import { Select, SelectItem } from "@heroui/select";
+import { Divider } from "@heroui/divider";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Alert } from "@heroui/alert";
 
 export default function OJPage() {
     const [code, lang, editor] = useCodeEditor();

@@ -1,10 +1,10 @@
 "use client";
 
+import { Switch } from "@heroui/switch";
 import { Editor, loader, useMonaco } from "@monaco-editor/react";
 import { ReactNode, useEffect, useState } from "react";
-import { Select, SelectItem } from "@nextui-org/select";
-import { Textarea } from "@nextui-org/input";
-import { Switch } from "@nextui-org/switch";
+import { Textarea } from "@heroui/input";
+import { Select, SelectItem } from "@heroui/select";
 
 const languages = [
     ["bin", "机器代码"],
@@ -168,16 +168,16 @@ const LC3_SYNTAX = {
 
 const editorSources = [
     {
-        test: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs/loader.min.js",
-        url: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.46.0/min/vs"
+        test: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js",
+        url: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs"
     },
     {
-        test: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs/loader.min.js",
-        url: "https://cdn.jsdelivr.net/npm/monaco-editor@0.46.0/min/vs"
+        test: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.min.js",
+        url: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs"
     },
     {
-        test: "https://cdn.staticfile.net/monaco-editor/0.46.0/min/vs/loader.min.js",
-        url: "https://cdn.staticfile.net/monaco-editor/0.46.0/min/vs"
+        test: "https://cdn.staticfile.net/monaco-editor/0.52.2/min/vs/loader.min.js",
+        url: "https://cdn.staticfile.net/monaco-editor/0.52.2/min/vs"
     }
 ];
 
@@ -189,6 +189,7 @@ export async function getPreferredEditorSource(): Promise<string> {
             return new Promise<string>((res) => {
                 fetch(test, { signal: ac.signal }).then((r) => {
                     if (r.ok) {
+                        console.log("Picked up URL: " + url);
                         ac.abort("Cancelled");
                         res(url);
                     }

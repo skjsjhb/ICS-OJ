@@ -1,4 +1,4 @@
-import { Code } from "@nextui-org/code";
+import { Code } from "@heroui/code";
 import clsx from "clsx";
 
 import { fontMono, fontSans } from "@/config/fonts";

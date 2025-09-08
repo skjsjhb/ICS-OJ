@@ -1,10 +1,10 @@
-import { Button } from "@nextui-org/button";
 import { BeakerIcon, RepoIcon } from "@primer/octicons-react";
-import { Divider } from "@nextui-org/divider";
 import Link from "next/link";
 
 import { title } from "@/components/primitives";
 import { siteConfig } from "@/config/site";
+import { Button } from "@heroui/button";
+import { Divider } from "@heroui/divider";
 
 export default async function Home() {
     const apiVersion = await (
@@ -17,9 +17,9 @@ export default async function Home() {
                 <div className="flex w-1/2 justify-between gap-2">
                     <div className="flex items-center justify-center gap-4">
                         <div className="flex flex-col justify-center items-center gap-4">
-                            <h1 className={title({ color: "cyan" })}>RUN</h1>
-                            <h1 className={title({ color: "green" })}>TEST</h1>
-                            <h1 className={title({ color: "pink" })}>PROFILE</h1>
+                            <div className={title({ color: "cyan" })}>RUN</div>
+                            <div className={title({ color: "green" })}>TEST</div>
+                            <div className={title({ color: "pink" })}>PROFILE</div>
                         </div>
                     </div>
 

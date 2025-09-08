@@ -1,13 +1,13 @@
 "use client";
 
-import { Card, CardBody } from "@nextui-org/card";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { runLogin } from "@/app/actions/auth";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
+import { Input } from "@heroui/input";
 
 export default function LoginPage() {
     const [formUid, setFormUid] = useState("");
