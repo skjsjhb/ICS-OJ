@@ -1,11 +1,10 @@
 import { submitCode } from "@/app/actions/oj";
 import { refreshToken } from "@/app/actions/auth";
 
-export async function sendBenchRequest(
+export async function clientSubmitCode(
     lab: string,
     lang: string,
-    code: string,
-    env: Record<string, string>
+    code: string
 ): Promise<string> {
     // TODO switch to enum check
     const lng = lang === "bin" ? "bin" : "asm";
@@ -22,8 +21,7 @@ export async function sendBenchRequest(
         uid: "", // Will be loaded from cookies
         driver: lab,
         lang: lng,
-        source: code,
-        env
+        source: code
     });
 
     if (!rid) {

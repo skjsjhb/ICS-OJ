@@ -8,6 +8,7 @@ import { useCookies } from "react-cookie";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Input } from "@heroui/input";
+import { Divider } from "@heroui/divider";
 
 export default function LoginPage() {
     const [formUid, setFormUid] = useState("");
@@ -36,9 +37,10 @@ export default function LoginPage() {
         return <Card className="w-1/3">
             <CardBody className="flex flex-col gap-4 items-center p-8">
                 <h1 className="text-2xl font-bold">欢迎回到 LC-3 评测姬！</h1>
-                <p>您的用户 ID：{uid}</p>
+                <p className="text-default-500">您的用户 ID：{uid}</p>
+                <Divider className="my-2"/>
                 <Button fullWidth color="primary" as={Link} href="/oj">前往评测</Button>
-                <Button fullWidth as={Link} href="/setpwd">修改密码</Button>
+                <Button fullWidth as={Link} href="/auth/setpwd">修改密码</Button>
                 <Button fullWidth onPress={logout} color="danger">注销</Button>
             </CardBody>
         </Card>;

@@ -8,7 +8,7 @@ import { ExceptionList } from "@/components/exception-list";
 import React from "react";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 
-export function BenchUnits({ result }: { result: TestResult }) {
+export function TestResultDisplay({ result }: { result: TestResult }) {
     if (result.units.length === 0)
         return <p className="font-bold text-default-400">（无内容）</p>;
 

@@ -26,7 +26,7 @@ export default function SetPwdPage() {
         }
 
         toast.success("已更新密码。");
-        router.push("/login");
+        router.push("/auth/login");
     }
 
     const allowSubmit = formPwd === confirmPwd && !!formPwd;

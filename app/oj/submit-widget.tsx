@@ -5,7 +5,7 @@ import { labContents } from "@/components/labs";
 import { PlayIcon } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { sendBenchRequest } from "@/components/bench";
+import { clientSubmitCode } from "@/components/submit";
 import { CodeContext } from "@/components/code-context";
 import { toast } from "react-toastify";
 import { Alert } from "@heroui/alert";
@@ -28,7 +28,7 @@ export function SubmitWidget() {
 
     const submitCode = async () => {
         try {
-            const res = await sendBenchRequest(labId, lang, code, {});
+            const res = await clientSubmitCode(labId, lang, code);
 
             toast.success("提交成功！");
             location.pathname = "/r/" + res;
@@ -59,7 +59,7 @@ export function SubmitWidget() {
                     color="warning"
                     title="登录后才能提交评测。"
                     endContent={
-                        <Button color="warning" variant="flat" as={Link} href="/login">
+                        <Button color="warning" variant="flat" as={Link} href="/auth/login">
                             前往登录
                         </Button>
                     }

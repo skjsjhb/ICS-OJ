@@ -12,7 +12,7 @@ export const siteConfig = {
         {
             icon: PersonIcon,
             label: "用户登录",
-            href: "/login"
+            href: "/auth/login"
         }
     ],
     benchAPI: "http://localhost:7901"

@@ -10,17 +10,13 @@ export default function CopyCode({ data }: { data: string; }) {
         toast.info("代码已复制。");
     }
 
-    return (
-        <>
-            <Button
-                color="primary"
-                onPress={copyCode}
-            >
-                <div className="flex items-center gap-2">
-                    <CopyIcon/>
-                    复制源代码
-                </div>
-            </Button>
-        </>
-    );
+    return <Button
+        color="primary"
+        onPress={copyCode}
+    >
+        <div className="flex items-center gap-2">
+            <CopyIcon/>
+            复制源代码
+        </div>
+    </Button>;
 }

@@ -2,16 +2,17 @@ import { ClockIcon } from "@primer/octicons-react";
 import { TestResult } from "lc3xt/src/nya/context";
 
 import CopyCode from "@/components/copy-code";
-import { BenchUnits } from "@/components/bench-units";
+import { TestResultDisplay } from "@/components/test-result-display";
 import CodeBlock from "@/components/code-block";
 import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import { ExceptionList } from "@/components/exception-list";
-import { getRecord } from "@/app/actions/record";
 import React from "react";
 import { cookies } from "next/headers";
 import { Chip } from "@heroui/chip";
 import { Divider } from "@heroui/divider";
+import { siteConfig } from "@/config/site";
+import { notFound } from "next/navigation";
 
 export default async function RecordPage({ params: params0 }: { params: Promise<{ id: string }> }) {
     const params = await params0;
@@ -19,16 +20,15 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
     const uid = cookieStore.get("uid")?.value || "";
     const token = cookieStore.get("token")?.value || "";
 
-    const res = await getRecord(params.id, token);
+    const res = await fetch(siteConfig.benchAPI + `/record/${params.id}`, {
+        headers: {
+            "Authorization": token
+        }
+    });
 
-    if (res === null) {
-        // return notFound();
-        return <div></div>;
-    }
+    if (!res.ok) return notFound();
 
-    const pending = res === "PENDING";
-
-    if (pending) {
+    if (res.status === 202) {
         return (
             <div className="flex flex-col gap-4 w-full h-full justify-center items-center">
                 <ClockIcon size={32}/>
@@ -38,7 +38,7 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
         );
     }
 
-    const testResult = JSON.parse(res) as TestResult;
+    const testResult = await res.json() as TestResult;
 
     if (testResult.context.uid !== uid) {
         return "";
@@ -73,13 +73,15 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
                 }
                 <br/>
                 <br/>
-                提交于 {new Date(testResult.time).toLocaleString()}
+                提交时间：{new Date(testResult.time).toLocaleString()}
                 <br/>
-                {benchedTime > 0 ? (
-                    <>评测完成于 {new Date(testResult.time).toLocaleString()}</>
-                ) : (
-                    <>评测失败</>
-                )}
+                {
+                    benchedTime > 0 ? (
+                        <>评测完成时间：{new Date(testResult.time).toLocaleString()}</>
+                    ) : (
+                        <>评测失败</>
+                    )
+                }
                 <br/>
                 提交者：{testResult.context.uid}
             </p>
@@ -116,16 +118,7 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
                     <p className="text-2xl font-bold">测试点信息</p>
 
                     <div className="w-10/12">
-                        <BenchUnits result={testResult}/>
-                    </div>
-
-                    <p className="text-2xl font-bold">评测参数</p>
-                    <div className="w-10/12">
-                        <CodeBlock
-                            code={Object.entries(testResult.context.env)
-                                .map(([k, v]) => k + "=" + v)
-                                .join("\n")}
-                        />
+                        <TestResultDisplay result={testResult}/>
                     </div>
                 </div>
 
