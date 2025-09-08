@@ -11,15 +11,15 @@ import { toast } from "react-toastify";
 import { useCodeEditor } from "@/components/code-editor";
 import { labContents } from "@/components/labs";
 import { sendBenchRequest } from "@/components/bench";
-import { getToken, useUid } from "@/components/user";
 import { Alert } from "@nextui-org/alert";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 export default function OJPage() {
     const [code, lang, editor] = useCodeEditor();
     const [labId, setLabId] = useState("hello");
     const [env, setEnv] = useState<Record<string, string>>({});
-    const [uid, setUid] = useUid();
+    const [cookies] = useCookies(["uid"]);
 
     useEffect(() => {
         const initLabId = localStorage.getItem("selected-lab") || "hello";
@@ -54,7 +54,7 @@ export default function OJPage() {
 
     const runBench = async () => {
         try {
-            const res = await sendBenchRequest(uid, getToken(), labId, lang, code, env);
+            const res = await sendBenchRequest(labId, lang, code, env);
 
             toast.success("提交成功！");
             location.pathname = "/r/" + res;
@@ -67,7 +67,7 @@ export default function OJPage() {
     const envItems = currentLab?.env || [];
 
     const disableSubmit =
-        !uid || code.trim().length == 0 ||
+        !cookies.uid || code.trim().length == 0 ||
         ((currentLab?.env.length || 0) > 0 &&
             (Object.values(env).includes("") || Object.values(env).length == 0));
 
@@ -117,7 +117,7 @@ export default function OJPage() {
                 ))}
 
                 {
-                    !uid &&
+                    !cookies.uid &&
                     <div className="w-full">
                         <Alert
                             color="warning"

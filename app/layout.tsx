@@ -10,6 +10,7 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import "react-toastify/dist/ReactToastify.css";
+import { ClientCookiesProvider } from "@/components/cookies-provider";
 
 export const metadata: Metadata = {
     title: {
@@ -56,12 +57,14 @@ export default async function RootLayout({ children }: {
             theme="dark"
         />
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <div className="w-full h-screen flex flex-col">
-                <Navbar/>
-                <div className="my-auto grow min-h-0">
-                    {children}
+            <ClientCookiesProvider>
+                <div className="w-full h-screen flex flex-col">
+                    <Navbar/>
+                    <div className="my-auto grow min-h-0">
+                        {children}
+                    </div>
                 </div>
-            </div>
+            </ClientCookiesProvider>
         </Providers>
         </body>
         </html>

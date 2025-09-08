@@ -6,14 +6,15 @@ import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { runLogin } from "@/app/actions/auth";
 import { toast } from "react-toastify";
-import { clearUid, setToken, useUid } from "@/components/user";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 export default function LoginPage() {
     const [formUid, setFormUid] = useState("");
     const [formPwd, setFormPwd] = useState("");
 
-    const [uid, setUid] = useUid();
+    const [cookies, , removeCookie] = useCookies(["uid"]);
+    const uid = cookies.uid ?? "";
 
     async function login() {
         const token = await runLogin(formUid, formPwd);
@@ -23,15 +24,11 @@ export default function LoginPage() {
         }
 
         toast.success("登录成功！");
-
-        setUid(formUid);
-        setToken(token);
     }
 
     function logout() {
-        setUid("");
-        clearUid();
-        setToken("");
+        removeCookie("uid");
+        location.reload();
     }
 
     if (uid) {

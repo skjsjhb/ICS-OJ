@@ -1,5 +1,3 @@
-"use client";
-
 import { Divider } from "@nextui-org/divider";
 import { Chip } from "@nextui-org/chip";
 import { ClockIcon } from "@primer/octicons-react";
@@ -12,22 +10,16 @@ import { RefreshButton } from "@/components/refresh-button";
 import { labContents } from "@/components/labs";
 import { ExceptionList } from "@/components/exception-list";
 import { getRecord } from "@/app/actions/record";
-import { getToken } from "@/components/user";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { cookies } from "next/headers";
 
-export default function RecordPage({ params: params0 }: { params: React.Usable<{ id: string }> }) {
-    // const latestVersion = await (
-    //     await fetch(siteConfig.benchAPI + "/version", { cache: "no-cache" })
-    // ).text();
-    const params = React.use(params0);
+export default async function RecordPage({ params: params0 }: { params: Promise<{ id: string }> }) {
+    const params = await params0;
+    const cookieStore = await cookies();
+    const uid = cookieStore.get("uid")?.value || "";
+    const token = cookieStore.get("token")?.value || "";
 
-    const [record, setRecord] = useState<string | null>(null);
-
-    useEffect(() => {
-        getRecord(params.id, getToken()).then(setRecord);
-    }, [params.id]);
-
-    const res = record;
+    const res = await getRecord(params.id, token);
 
     if (res === null) {
         // return notFound();
@@ -47,6 +39,10 @@ export default function RecordPage({ params: params0 }: { params: React.Usable<{
     }
 
     const testResult = JSON.parse(res) as TestResult;
+
+    if (testResult.context.uid !== uid) {
+        return "";
+    }
 
     const benchedTime = getCompletedTime(testResult);
     const passed = testResult.accepted;
