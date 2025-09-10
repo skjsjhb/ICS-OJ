@@ -26,17 +26,11 @@ export function CodeContextProvider({ children }: PropsWithChildren) {
         setLang(localStorage.getItem("editor.lang") || "asm");
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("editor.code", code);
-    }, [code]);
-
-    useEffect(() => {
-        localStorage.setItem("editor.lang", lang);
-    }, [lang]);
-
     function update(v: CodeContextContent) {
         setCode(v.code);
         setLang(v.lang);
+        localStorage.setItem("editor.code", v.code);
+        localStorage.setItem("editor.lang", v.lang);
     }
 
     return <CodeContext.Provider value={{ value: { code, lang }, setValue: update }}>

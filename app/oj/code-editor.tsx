@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch } from "@heroui/switch";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import AceEditor from "react-ace";
@@ -9,18 +9,43 @@ import AceEditor from "react-ace";
 import "ace-builds/src-min-noconflict/theme-one_dark";
 import "./lc3";
 import { CodeContext } from "@/components/code-context";
+import { i18nInit } from "lc3xt/src/i18n/i18n";
+import { loli } from "lc3xt/src/loli/api";
+import { AssembleExceptionSummary } from "lc3xt/src/loli/exceptions";
 
 const languages = [
     ["bin", "机器代码"],
     ["asm", "LC-3 汇编"]
 ];
 
+let i18nInitialized = false;
+
+function buildCode(src: string): AssembleExceptionSummary[] {
+    if (!i18nInitialized) {
+        i18nInitialized = true;
+        void i18nInit("zh-CN");
+    }
+
+    return loli.build(src).exceptions;
+}
+
 export function CodeEditor() {
     const [useAltEditor, setUseAltEditor] = useState<boolean>(false);
+    const [inspections, setInspections] = useState<AssembleExceptionSummary[]>([]);
     const { value: { code, lang }, setValue } = useContext(CodeContext);
+    const dirtyTimer = useRef<any>(null);
 
     function onCodeChange(code: string) {
         setValue({ code, lang });
+
+        if (!useAltEditor) {
+            // Debounce
+            clearTimeout(dirtyTimer.current);
+            setTimeout(() => {
+                const ins = buildCode(code);
+                setInspections(ins);
+            }, 200);
+        }
     }
 
     function onLangChange(lang: string) {
@@ -42,7 +67,12 @@ export function CodeEditor() {
         {
             useAltEditor ?
                 <AltCodeEditor code={code} setCode={onCodeChange}/> :
-                <FancyCodeEditor code={code} setCode={onCodeChange} highlight={lang === "asm"}/>
+                <FancyCodeEditor
+                    code={code}
+                    setCode={onCodeChange}
+                    highlight={lang === "asm"}
+                    inspections={inspections}
+                />
         }
         <div>
             <Switch onChange={(e) => setUseAltEditor(e.target.checked)}>
@@ -69,11 +99,33 @@ function AltCodeEditor({ code, setCode }: {
     );
 }
 
-function FancyCodeEditor({ code, setCode, highlight }: {
+function FancyCodeEditor({ code, setCode, highlight, inspections }: {
     code: string;
     setCode: (c: string) => void;
-    highlight: boolean
+    highlight: boolean,
+    inspections: AssembleExceptionSummary[]
 }) {
+    const editorRef = useRef<AceEditor | null>(null);
+
+    useEffect(() => {
+        const annotations = inspections.map(ex => {
+            if (!ex.lineNo || !ex.message || !ex.message) return null;
+            return {
+                row: ex.lineNo - 1,
+                text: ex.message,
+                type: ex.level === "error" ? "error" : "warning"
+            };
+        }).filter(it => !!it);
+
+        const editor = editorRef.current?.editor;
+        if (!editor) return;
+
+        editor.getSession().clearAnnotations();
+        setTimeout(() => {
+            editor.getSession().setAnnotations(annotations as any);
+        });
+    }, [inspections]);
+
     return (
         <div className="w-full h-full rounded-lg overflow-hidden">
             <AceEditor
@@ -81,6 +133,7 @@ function FancyCodeEditor({ code, setCode, highlight }: {
                 style={{
                     fontFamily: "\"JetBrains Mono Semibold\", Consolas, Menlo, Monaco, \"Courier New\", monospace"
                 }}
+                ref={editorRef}
                 theme="one_dark"
                 width="100%"
                 height="100%"
