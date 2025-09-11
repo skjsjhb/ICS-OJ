@@ -31,7 +31,7 @@
         "clsx": "^2.1.1",
         "framer-motion": "^12.23.12",
         "intl-messageformat": "^10.7.16",
-        "lc3xt": "github:skjsjhb/lc3xt#73ea906",
+        "lc3xt": "github:skjsjhb/lc3xt#0f9b343",
         "next": "^15.5.2",
         "next-themes": "^0.4.6",
         "react": "^19.1.1",
@@ -902,7 +902,7 @@
 
     "keyv": ["keyv@4.5.4", "", { "dependencies": { "json-buffer": "3.0.1" } }, "sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw=="],
 
-    "lc3xt": ["lc3xt@github:skjsjhb/lc3xt#73ea906", { "dependencies": { "arg": "^5.0.2", "consola": "^3.4.2", "cors": "^2.8.5", "express": "^4.21.2", "fs-extra": "^11.3.1", "i18next": "^23.16.8", "js-levenshtein": "^1.1.6", "jsonwebtoken": "^9.0.2", "lokijs": "^1.5.12", "nanoid": "^5.1.5", "p-limit": "^6.2.0", "runcatching": "^1.0.2", "string-similarity-js": "^2.1.4", "ws": "^8.18.3" } }, "skjsjhb-LC3XT-73ea906"],
+    "lc3xt": ["lc3xt@github:skjsjhb/lc3xt#0f9b343", { "dependencies": { "arg": "^5.0.2", "consola": "^3.4.2", "cors": "^2.8.5", "express": "^4.21.2", "fs-extra": "^11.3.1", "i18next": "^23.16.8", "js-levenshtein": "^1.1.6", "jsonwebtoken": "^9.0.2", "lokijs": "^1.5.12", "nanoid": "^5.1.5", "p-limit": "^6.2.0", "runcatching": "^1.0.2", "string-similarity-js": "^2.1.4", "ws": "^8.18.3" } }, "skjsjhb-LC3XT-0f9b343"],
 
     "levn": ["levn@0.4.1", "", { "dependencies": { "prelude-ls": "^1.2.1", "type-check": "~0.4.0" } }, "sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ=="],
 

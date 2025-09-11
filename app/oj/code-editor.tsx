@@ -35,9 +35,11 @@ export function CodeEditor() {
     const { value: { code, lang }, setValue } = useContext(CodeContext);
     const dirtyTimer = useRef<any>(null);
 
-    function onCodeChange(code: string) {
-        setValue({ code, lang });
+    useEffect(() => {
+        scheduleBuild(code);
+    }, [code]);
 
+    function scheduleBuild(code: string) {
         if (!useAltEditor) {
             // Debounce
             clearTimeout(dirtyTimer.current);
@@ -46,6 +48,10 @@ export function CodeEditor() {
                 setInspections(ins);
             }, 200);
         }
+    }
+
+    function onCodeChange(code: string) {
+        setValue({ code, lang });
     }
 
     function onLangChange(lang: string) {
