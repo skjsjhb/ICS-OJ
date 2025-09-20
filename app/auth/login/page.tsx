@@ -14,7 +14,7 @@ export default function LoginPage() {
     const [formUid, setFormUid] = useState("");
     const [formPwd, setFormPwd] = useState("");
 
-    const [cookies, , removeCookie] = useCookies(["uid"]);
+    const [cookies, setCookie, removeCookie] = useCookies(["uid"]);
     const uid = cookies.uid ?? "";
 
     async function login() {
@@ -24,12 +24,14 @@ export default function LoginPage() {
             return;
         }
 
+        // Clear the form
+        setFormUid("");
+        setFormPwd("");
         toast.success("登录成功！");
     }
 
     function logout() {
-        removeCookie("uid");
-        location.reload();
+        setCookie("uid", "", { path: "/" });
     }
 
     if (uid) {
