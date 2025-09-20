@@ -40,10 +40,6 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
 
     const testResult = await res.json() as TestResult;
 
-    if (testResult.context.uid !== uid) {
-        return "";
-    }
-
     const benchedTime = getCompletedTime(testResult);
     const passed = testResult.accepted;
     const totalCount = testResult.units.length;
