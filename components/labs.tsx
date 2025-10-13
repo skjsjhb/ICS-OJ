@@ -6,6 +6,10 @@ export interface LabMeta {
 export const labContents: LabMeta[] = [
     {
         id: "hello",
-        displayName: "试用评测"
+        displayName: "ICS-TR-1 试用评测"
+    },
+    {
+        id: "lab1",
+        displayName: "ICS-1 或许有时"
     }
 ];

@@ -150,7 +150,7 @@ function FailedDescription({ code, benchResult }: { code: string; benchResult: T
 function getErrorText(b: TestResult): string {
     if (b.error === "CE")
         return `未完成评测：汇编错误`; // TODO list compile errors
-    else return "未完成评测：评测选项错误或缺失";
+    else return "未完成评测：" + b.error;
 }
 
 function getCompletedTime(b: TestResult) {
