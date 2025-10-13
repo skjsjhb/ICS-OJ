@@ -8,7 +8,7 @@ export async function submitCode(input: TestInput) {
     const cookieStore = await cookies();
     const uid = cookieStore.get("uid")?.value || "";
     const token = cookieStore.get("token")?.value || "";
-    if (!uid || !token) return "";
+    const authorization = (uid && token) ? token : "guest";
 
     input.uid = uid;
 
@@ -16,7 +16,7 @@ export async function submitCode(input: TestInput) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token
+            "Authorization": authorization
         },
         body: JSON.stringify(input)
     });

@@ -28,7 +28,7 @@ export function SubmitWidget() {
 
     const submitCode = async () => {
         try {
-            const res = await clientSubmitCode(labId, lang, code);
+            const res = await clientSubmitCode(labId, lang, code, !cookies.uid);
 
             toast.success("提交成功！");
             location.pathname = "/r/" + res;
@@ -37,7 +37,7 @@ export function SubmitWidget() {
         }
     };
 
-    const disableSubmit = !cookies.uid || code.trim().length == 0;
+    const disableSubmit = code.trim().length == 0;
 
     return <div className="flex flex-col gap-6 w-full">
         <Select
@@ -57,7 +57,7 @@ export function SubmitWidget() {
             <div className="w-full">
                 <Alert
                     color="warning"
-                    title="登录后才能提交评测。"
+                    title="您尚未登录，评测记录将不记名。"
                     endContent={
                         <Button color="warning" variant="flat" as={Link} href="/auth/login">
                             前往登录

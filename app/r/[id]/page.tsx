@@ -17,7 +17,6 @@ import { notFound } from "next/navigation";
 export default async function RecordPage({ params: params0 }: { params: Promise<{ id: string }> }) {
     const params = await params0;
     const cookieStore = await cookies();
-    const uid = cookieStore.get("uid")?.value || "";
     const token = cookieStore.get("token")?.value || "";
 
     const res = await fetch(siteConfig.benchAPI + `/record/${params.id}`, {
@@ -44,6 +43,7 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
     const passed = testResult.accepted;
     const totalCount = testResult.units.length;
     const passedCount = testResult.units.filter((u) => u.status === "AC").length;
+    const isGuest = testResult.context.uid === "";
 
     return (
         <div className="mx-auto w-5/6 py-8 px-8 flex flex-col gap-4">
@@ -59,6 +59,13 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
             ) : (
                 <p className="text-xl font-bold text-yellow-300">祝下次好运！</p>
             )}
+
+            {
+                isGuest &&
+                <div className="text-warning font-bold">
+                    本次评测未记名，将在您离开后被销毁。
+                </div>
+            }
 
             <Divider/>
 
@@ -79,7 +86,7 @@ export default async function RecordPage({ params: params0 }: { params: Promise<
                     )
                 }
                 <br/>
-                提交者：{testResult.context.uid}
+                {testResult.context.uid && ("提交者：" + testResult.context.uid)}
             </p>
 
             <Divider className="my-2"/>
