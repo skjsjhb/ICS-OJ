@@ -3,6 +3,7 @@ export interface LabMeta {
     displayName: string;
 }
 
+// TODO: Fetch it from NYA
 export const labContents: LabMeta[] = [
     {
         id: "hello",
@@ -11,5 +12,9 @@ export const labContents: LabMeta[] = [
     {
         id: "lab1",
         displayName: "ICS-1 或许有时"
+    },
+    {
+        id: "lab2",
+        displayName: "ICS-2 循序渐进"
     }
 ];
