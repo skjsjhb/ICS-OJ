@@ -20,5 +20,9 @@ export const labContents: LabMeta[] = [
     {
         id: "lab3",
         displayName: "ICS-3 数字风暴"
+    },
+    {
+        id: "lab4",
+        displayName: "ICS-AVE-4 乐队急送"
     }
 ];
