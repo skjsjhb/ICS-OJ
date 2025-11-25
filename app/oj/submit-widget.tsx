@@ -53,7 +53,7 @@ export function SubmitWidget() {
         }
     };
 
-    const disableSubmit = code.trim().length == 0;
+    const disableSubmit = code.trim().length == 0 && !file;
 
     return <div className="flex flex-col gap-6 w-full">
         <Select
