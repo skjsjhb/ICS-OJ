@@ -1,7 +1,6 @@
 "use client";
 
 import { Switch } from "@heroui/switch";
-import type { DragEvent } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
@@ -13,10 +12,12 @@ import { CodeContext } from "@/components/code-context";
 import { i18nInit } from "lc3xt/src/i18n/i18n";
 import { loli } from "lc3xt/src/loli/api";
 import { AssembleExceptionSummary } from "lc3xt/src/loli/exceptions";
+import { useDropzone } from "react-dropzone";
 
 const languages = [
     ["bin", "机器代码"],
-    ["asm", "LC-3 汇编"]
+    ["asm", "LC-3 汇编"],
+    ["file", "源码包"]
 ];
 
 let i18nInitialized = false;
@@ -33,8 +34,10 @@ function buildCode(src: string): AssembleExceptionSummary[] {
 export function CodeEditor() {
     const [useAltEditor, setUseAltEditor] = useState<boolean>(false);
     const [inspections, setInspections] = useState<AssembleExceptionSummary[]>([]);
-    const { value: { code, lang }, setValue } = useContext(CodeContext);
+    const { value: { code, lang, file }, setValue } = useContext(CodeContext);
     const dirtyTimer = useRef<any>(null);
+
+    const useFileUploader = lang === "file";
 
     useEffect(() => {
         scheduleBuild(code);
@@ -52,38 +55,24 @@ export function CodeEditor() {
     }
 
     function onCodeChange(code: string) {
-        setValue({ code, lang });
+        setValue({ code, lang, file });
     }
 
     function onLangChange(lang: string) {
-        setValue({ code, lang });
+        setValue({ code, lang, file });
     }
 
-    async function onFileDrop(ev: DragEvent<HTMLDivElement>) {
-        console.log("Dropped event");
-        ev.preventDefault();
-        const files = ev.dataTransfer?.files;
-        console.log("Files: " + files?.length);
-        if (files) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const bytes = new Uint8Array(e.target?.result as ArrayBuffer);
-                let binary = "";
-                for (let i = 0; i < bytes.byteLength; i++) {
-                    binary += String.fromCharCode(bytes[i]);
-                }
-                const txt = window.btoa(binary);
-                setValue({ code: txt, lang });
-            };
-            reader.readAsArrayBuffer(files[0]);
-        }
+    function onFileChange(file: File) {
+        setValue({ code, lang, file });
     }
 
-    return <div className="flex flex-col gap-4 items-center w-full h-full" onDrop={onFileDrop}
-                onDragOver={(e) => {
-                    console.log("Drag over!");
-                    e.preventDefault();
-                }}>
+    function onFileDrop(f: File[]) {
+        if (f[0]) onFileChange(f[0]);
+    }
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: onFileDrop });
+
+    return <div className="flex flex-col gap-4 items-center w-full h-full">
         <Select
             disallowEmptySelection
             label="语言"
@@ -96,20 +85,38 @@ export function CodeEditor() {
             ))}
         </Select>
         {
-            useAltEditor ?
-                <AltCodeEditor code={code} setCode={onCodeChange}/> :
-                <FancyCodeEditor
-                    code={code}
-                    setCode={onCodeChange}
-                    highlight={lang === "asm"}
-                    inspections={inspections}
-                />
+            useFileUploader ?
+                <div
+                    className="h-24 w-full mx-2 border-dashed border-3 rounded-lg border-gray-400 flex flex-col items-center justify-center"
+                    {...getRootProps()}>
+                    <input {...getInputProps()}/>
+                    <div className="mx-auto my-auto">
+                        {
+                            isDragActive ? "松开以上传" :
+                                file ? file.name : "拖放文件到这里……"
+                        }
+                    </div>
+                </div> :
+
+                <>
+                    {
+                        useAltEditor ?
+                            <AltCodeEditor code={code} setCode={onCodeChange}/> :
+                            <FancyCodeEditor
+                                code={code}
+                                setCode={onCodeChange}
+                                highlight={lang === "asm"}
+                                inspections={inspections}
+                            />
+                    }
+                    <div>
+                        <Switch onChange={(e) => setUseAltEditor(e.target.checked)}>
+                            使用纯文本编辑器
+                        </Switch>
+                    </div>
+                </>
         }
-        <div>
-            <Switch onChange={(e) => setUseAltEditor(e.target.checked)}>
-                使用纯文本编辑器
-            </Switch>
-        </div>
+
     </div>;
 }
 

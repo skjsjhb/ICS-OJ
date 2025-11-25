@@ -11,11 +11,12 @@ import { toast } from "react-toastify";
 import { Alert } from "@heroui/alert";
 import { Button } from "@heroui/button";
 import Link from "next/link";
+import { encode } from "uint8-to-base64";
 
 export function SubmitWidget() {
     const [labId, setLabId] = useState("hello");
     const [cookies] = useCookies(["uid"]);
-    const { value: { code, lang } } = useContext(CodeContext);
+    const { value: { code, lang, file } } = useContext(CodeContext);
 
     useEffect(() => {
         setLabId(localStorage.getItem("selected-lab") || "hello");
@@ -28,7 +29,22 @@ export function SubmitWidget() {
 
     const submitCode = async () => {
         try {
-            const res = await clientSubmitCode(labId, lang, code, !cookies.uid);
+            let content: string;
+
+            if (lang === "file" && file) {
+                const { promise, resolve, reject } = Promise.withResolvers<string>();
+                const fr = new FileReader();
+                fr.onerror = (e) => reject(e);
+                fr.onload = (d) => {
+                    const buf = d.target?.result as ArrayBuffer;
+                    resolve(encode(new Uint8Array(buf)));
+                };
+                fr.readAsArrayBuffer(file);
+                content = await promise;
+            } else {
+                content = code;
+            }
+            const res = await clientSubmitCode(labId, lang, content, !cookies.uid);
 
             toast.success("提交成功！");
             location.pathname = "/r/" + res;
