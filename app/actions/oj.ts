@@ -12,7 +12,14 @@ export async function submitCode(input: TestInput) {
 
     input.uid = uid;
 
-    const res = await fetch(siteConfig.benchAPI + "/submit", {
+    let endpoint = "/submit";
+
+    // TODO: Need a robust solution
+    if (input.driver === "assembler") {
+        endpoint = "/assembler-submit";
+    }
+
+    const res = await fetch(siteConfig.benchAPI + endpoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

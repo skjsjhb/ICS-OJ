@@ -1,6 +1,7 @@
 "use client";
 
 import { Switch } from "@heroui/switch";
+import type { DragEvent } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
@@ -58,7 +59,31 @@ export function CodeEditor() {
         setValue({ code, lang });
     }
 
-    return <div className="flex flex-col gap-4 items-center w-full h-full">
+    async function onFileDrop(ev: DragEvent<HTMLDivElement>) {
+        console.log("Dropped event");
+        ev.preventDefault();
+        const files = ev.dataTransfer?.files;
+        console.log("Files: " + files?.length);
+        if (files) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const bytes = new Uint8Array(e.target?.result as ArrayBuffer);
+                let binary = "";
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                const txt = window.btoa(binary);
+                setValue({ code: txt, lang });
+            };
+            reader.readAsArrayBuffer(files[0]);
+        }
+    }
+
+    return <div className="flex flex-col gap-4 items-center w-full h-full" onDrop={onFileDrop}
+                onDragOver={(e) => {
+                    console.log("Drag over!");
+                    e.preventDefault();
+                }}>
         <Select
             disallowEmptySelection
             label="语言"

@@ -28,5 +28,13 @@ export const labContents: LabMeta[] = [
     {
         id: "lab5",
         displayName: "ICS-5 最后手段"
+    },
+    {
+        id: "assembler",
+        displayName: "ICS-S-1 文本即数据"
     }
+    // {
+    //     id: "emulator",
+    //     displayName: "ICS-S-2 数据即代码"
+    // }
 ];
