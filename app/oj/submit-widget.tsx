@@ -1,5 +1,6 @@
 "use client";
 
+import pako from "pako";
 import { Select, SelectItem } from "@heroui/select";
 import { labContents } from "@/components/labs";
 import { PlayIcon } from "@primer/octicons-react";
@@ -36,8 +37,9 @@ export function SubmitWidget() {
                 const fr = new FileReader();
                 fr.onerror = (e) => reject(e);
                 fr.onload = (d) => {
-                    const buf = d.target?.result as ArrayBuffer;
-                    resolve(encode(new Uint8Array(buf)));
+                    const buf = new Uint8Array(d.target?.result as ArrayBuffer);
+                    const gzipBuf = pako.deflate(buf);
+                    resolve(encode(gzipBuf));
                 };
                 fr.readAsArrayBuffer(file);
                 content = await promise;
