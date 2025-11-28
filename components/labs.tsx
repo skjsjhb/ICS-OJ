@@ -32,9 +32,9 @@ export const labContents: LabMeta[] = [
     {
         id: "assembler",
         displayName: "ICS-S-1 文本即数据"
+    },
+    {
+        id: "emulator",
+        displayName: "ICS-S-2 数据即代码"
     }
-    // {
-    //     id: "emulator",
-    //     displayName: "ICS-S-2 数据即代码"
-    // }
 ];

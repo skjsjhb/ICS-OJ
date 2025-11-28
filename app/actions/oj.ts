@@ -15,7 +15,7 @@ export async function submitCode(input: TestInput) {
     let endpoint = "/submit";
 
     // TODO: Need a robust solution
-    if (input.driver === "assembler") {
+    if (input.driver === "assembler" || input.driver === "emulator") {
         endpoint = "/assembler-submit";
     }
 
